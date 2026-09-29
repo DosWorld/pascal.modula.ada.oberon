@@ -1,0 +1,3607 @@
+OCR of Lilith.pdf (70 pages). Tesseract eng, 2400x3200 page thumbnails.
+Page numbers below are PDF page numbers. OCR may misread code and mathematical symbols.
+
+===== PDF page 1 =====
+
+ETH
+
+| Eidgendssische Technische Hochschule
+Zurich
+_ institut fur Informatik
+
+THE PERSONAL COMPUTER LILITH
+
+BP osuallll |
+_ Research institute
+950 N University Avenue
+(901) 378-7402
+
+Reprinted by permission
+Octebder 1983
+
+===== PDF page 2 =====
+
+Reproduced by permission.
+CFB Software
+www.cfbsoftware.com
+December 2003
+
+©) institut flir Informatik, ETH Zilrich 1981
+
+Author's address:
+N. Wirth
+Institut flix Informatik
+ETH-Zentrum
+CH-68092 Ziirich
+
+===== PDF page 3 =====
+
+~jf =
+
+Contents
+
+1. Introduction 3
+2. Project history and overview 4
+3. Modules and interfaces in Modula-2 7
+4. Coroutines and processes 16
+§. The operating systes 14
+6. Separate compilation of modules 7?
+7. The architecture of the Lilith computer 19
+8. The Lilith Instruction set ., 23
+9. The Lilith hardware structure 24
+1. The micro-controel unit 25
+2. The arithmetic-legic unit 26
+3. The memory 28
+4. The instruction fetch unit 28
+5. The Mouse 29
+&. The Monitor 23
+7. The physical leyout 39
+18. Conclusions 31
+Acknowledgements 32
+References 33
+Figures 34
+Appendix 3: The M-code interpreter 56
+
+Appendix 2: A benchmark test for
+Modula-2 implementations — 65
+
+The Personal Computer Lilith
+
+Ath me eA i ai ir net
+
+Abstract
+
+The personal work station offers significant advantages over the
+large-scale, central computing facility accessed via a terminal.
+Among them are availability, reliability, simplicity of
+operation, and a high bandwidth to the user. Modern technology
+allows to build systems for high-level language programsing with
+significant computing power for a reasonable price.
+
+At the Institut fur Informatik of ETH we have designed and built
+such & personal computer tailored to the language Modula-2. This
+paper is a report on this project which encompasses language
+design, developaent of «a compiler and a single-user operating
+system, design of an architecture suitable for compiling and
+ylelding a high density of code, and the development and
+construction of the hardware. 28 Lilith computers are now in use
+at eTu.
+
+A principal theme ia that the requirements of software
+engineecing influence the design of the language, and that its
+factlities are reflected by the architecture of the computer and
+the structure of the hardware. That the hardware should be
+desiqned according to the programming language, Instead of vice-
+versa, is particularly relevant in view of the current trend
+towards VLSI technology.
+
+===== PDF page 4 =====
+
+
+===== PDF page 5 =====
+
+-j-
+
+1. Introduction
+
+ee ee ee ee ie i
+
+Seftware Engineering builds upon two pillars: methods and tools.
+Their interrelation is strong. In order to apply new «methods
+effectively, we need the appropriate tools. In order to build
+supporting tools, we must master powerful methods. Much effort
+has been spent on improving our methods, particularly in
+Programming, and many discussions and conferences have been
+devoted to the subject of furthering the state of the art by
+applying more effactive methods. This includes @ tendency
+towards the highly mathematical treatment of programaing, the
+postulation of high-level languages for programming large
+systems, the method of structured programming, and the
+managerial aspects of organizing the work of programmers’ teams.
+
+All of these areas are important; they form the part of a whole.
+But perhaps none is as important as the adequate training of the
+individual team number into a habit of systematic thinking. No
+team can be successful without 311 Its members being trained to
+regard programming as a highly logical and = = mathematical
+activity. And the success of a mathematical treatment rests
+largely on the use of an adequate notation, f.e. pragramming
+"language". The designer of algorithnas alight be content with the
+adequate notation and regard it as his only tool needed.
+However, our subject at large is not the design of algorithms or
+programs, but the design of machines. We must regard prograaming
+as designing machinery, for programs turn *raw hardware* into
+that machinery which fulfils the specified task.
+
+Obviously a good notation must therefore be supported by an
+excellent isplementation, just as a good mathematical Framework
+for program design must be supported by an appropriate notation.
+Moving one step further, the notation's implementation must be
+suppotted by an appropriate computer system. The measure of its
+quality not only includes aspects of computing power, cost-
+effectiveness, and software support (the so-called = prograaaing
+environment), but <slso a alaplicity and perspicuity of the
+entise system, a convenfence to use the system, a high degree of
+availability, and - on the more technical side - « high
+bandwidth of information transfer between computer and .
+Programmer. The latter aspects point in the direction of a |
+personal work station in contrast to the remote, time-shared,
+large-scale computing facility.
+
+Fortunately, modern seniconductor technology has made it
+possible to implement a modern programming language with
+excellent support Facilittes on relatively small computers that
+are very Inexpensive compared to conventional large computing
+installations. The fact that the mechanises for sharing a
+computer ~ and in particular that for protecting the users from
+the alatakes of others - can be discarded, ceduces a systen’s
+complexity drastically, and thereby improves both its
+
+===== PDF page 6 =====
+
+rellability and pecspicuity. The possibliity to implement
+modern, high-level languages on relatively small non-shared
+computers was perhaps the most significant “discovery” during
+the last five years. A personal computer, programmable in such 4
+language, canstitutes, in my opinion, a necessary tool for the
+creative software angineer of the future.
+
+2. Project history and overview
+
+sr Heh 0 mn HP th HE le RSH SD HY SS
+
+The decision to design and build 4 personal computec as
+motivated above was made in the fall of 1977, after the author
+had learned to appreciate the advantages of working with an Alto
+computer [1]. The project included the followlng principal pacts
+{2):
+
+~ design of the programeing language Modula-2.
+
+~ implementation of &@ multipass compiler suitable for relatively
+small computers.
+
+- Gevelopment of a basic, single-user operating system,
+including a file system and a Linking loader.
+
+~ design and implementation of s modern, flexibie text editor
+taking full advantage of the computer's capabilities.
+
+~ lapiesentation of a set of basic utility programa for file
+directory inspection, copying, canaming, deleting, end listkng
+
+les.
+
+- programming and implementing an appropriate set of library
+modules for file handling, access to peripheral devices - in
+particular the display ~ and storage management.
+
+- designing a suitable machine architecture as ideal interface
+between compiler and hardware, and Programming this
+architecture in alcrocode.
+
+- design of the hardware capable of efficiently interpreting the
+microcode and supporting the desirable peripheral devices,
+
+- building two prototypes of the designed hardware, and
+modifying them according to Insight gained = from the
+concurrent development of hard- and saftware.
+
+- building a series of 28 computers, debugging and testing them.
+
+- welting documentation and ussr manuals.
+
+The language Modula-2 - the notation in which this system
+presents itself to the software engineer - was designed as a
+general system programming language [3]. The guiding principle
+was that this lanquage would be the only language available on
+the computer. Especially, no assembler would be available, and
+hence, the language should be suitable for both high-level
+programming in a machine-independent manner and low-level
+programming of machine-particular aspects, such as device
+handling and = storage allocation. In Eact, the entire cperating
+System, the compiler, the utility programs, and the libcary
+modules are programmed exclusively in Modula-2.
+
+===== PDF page 7 =====
+
+The complier is subdivided into four parts. Each part processes
+the output of its predecessor in sequential fashion and is
+therefore called a pass. The first pass performs lexical and
+syntactic analysis, and it collects identifiers, allocating them
+in a table. The second pass processes declarations, generating
+the so-called symbol tables that are accessed in the third pass
+to perform the type consistency checking in expressions and
+statements. The fourth pass generates code. Its output is called
+M~code. .
+
+The operating system is conceived according to the concept of an
+*“open® system [4]. It is divided into three principal parts,
+namely the linking loader, the file system, and routines for
+keyboard input and text output on the display. The File system
+maps abstract files (sequences of words or characters) onto disk
+pages and provides the necessary basic routines for creating,
+naming, writing, reading, positioning, and deleting files. Both,
+leader and file system present themselves to the Madula-2
+Programmer as modules (packages) whose routines can be imported
+into any program. Whenever a program terminates, the basic
+operating systes activates the command interpreter which
+requests the file name of the next program to be loaded and
+initiated.
+
+The computer as “seen by the compiler® is implemented as a
+sicroprogrammed interpreter of the M-code, The M-code is
+designed with the principal goais of obtaining a high density of
+code and of making the process of its generation relatively
+systematic and straight-forward. Although space is definitely
+the scarcer cesource than time, a high density of code is
+desirable not only in the interest of saving memory space, hut
+also for reducing the frequency of f{nstruction fetches. A
+comparison between two different, but strongly related compilers
+reveated that M-code is shorter than code for the PDP~11 by a
+factor of almost &. This surprising figuce is clear evidence of
+the inappropriate structure of *“canventionai” computer
+instruction sets, including those of most modern microprocessors
+that were Still designed with the human assembly language coder
+nm mind,
+
+The actual hardware consists of a central procesgzing unit based
+on an Am2981 bit-slice unit, a multi-port memory with 128K words
+of 16 bits, a micro-cade memory of 2k Instructions iaplemented
+with PROMs, a4 controller each for the display, the disk, and a
+local network, and interfaces for the keyboard, a cursor
+teacking device called the mouse, and a V-24 (RS-232) serial
+line interface. The central processor operates at a basic clock
+cycle of 56 ns, the time required to interpret a micro-
+instruction. The most frequently occuring M-cade instructions
+correspond to about § micro-instructions on the average.
+
+The display is based on the raster Scan technique using 594
+lines of 766 dota each. Each of the 456°192 dots is represented
+
+===== PDF page 8 =====
+
+a
+
+in main memory by one bit. Ff the entice screen ia fully used,
+its bitdap occupies 26°SI2 words, f.e. 220 of memory. The
+representation of each dot {picture element} in program
+accessible sain memory makes the display equally suitable for
+text, technical diagrams, and graphics in general. In the case
+of text, each character is generated by copying the character's
+bitmap into the appropriate place of the entice screen's bitmap.
+This is done by software, supported by appropriate microcoded
+routines, corresponding to special M-code instructions. This
+solution, in contrast to hardware chacacter generators, offecs
+the possibility to vary the chargacters* size, thickness
+(boldface), inclination (italics} and even style. In shoct,
+different fonts can be displayed. This feature, which is
+Particularly attractive for text processing, requires a
+Substantial amount of computing power to be avallable in short
+bursts. The writing of a full screen, i.@. conversion of
+characters from ASCII code to correctly positioned bitaaps,
+takes about 1/4 second. Using a small font, a full screen may
+display up to 19'809 characters.
+
+The disk used in this personal computer is a Honeywell-Bull
+D-12@ cartridge disk with a capacity of 18 MBytes and a
+potential transfer rate of 728 kB/s, which cesults in an actual
+rate of 6@ kB/s for reading or writing of sequential filles. Disk
+Sectors, each containing 256 Bytes, are allocated in multiples
+of 8 on the same track. Allocation {2s entiraly dynamic, and
+hence fo storage contraction processes are needed to retrieve
+"holes". The use of exchangeable cartridge disks in contrast to
+sealed (Winchester) disks has been considered as essential ia
+order that a work station may be used by different people at
+different times without reliance on the existence of a network
+and a centcal file store,
+
+The mouse is a device that transmits signals to the computer
+which represent the mouse's movements on the table. These
+movements are translated {again by software) into a cursos
+displayed on the screen. The accuracy of position is as high ss
+the resolution of the screen, because the feadback from cursor
+to mouse travels via the user‘s eye and hand. The souse also
+contains three pushbuttons {keys} which are convenient for
+giving commands while positioning the mouse,
+
+The various principal parts of the projects were undertaken more
+or less concurrently. The team consisted of @ {part tine) people
+fn the average (not counting the production of 28 machines}, and
+was small enough to require neither management staff nor
+methods. The hardware was designed and built by three engineers
+{including the author), two computer scientists built the
+compiler, one the operating system, one laplemented the
+microcode and most of the editor. The software effort was based
+on the use of a PDP-11/48 computer {with 8 28K store) and was
+initiated with the development of s compiler for Modula-2
+generating code for the PDP-1l itself. This “preliminary”
+
+===== PDF page 9 =====
+
+compiler development constituted a significant part of the
+entire software effort, and resulted in a valuable software tool
+that had recently been released for distribution, 1t also made
+the development of the Lilfth software quite independent Erom
+the progress of the hardware. Both the Modula~2 compiler for -
+code, the operating system, and even the highly display-oriented
+editor were developed on the POP-11, and the subsequent
+transport to the Lilith computer proved to be quite
+unproblematic due to programming in. Modula-2. In fact, the
+untested compiler was transported and debugged (at least to an
+acceptable degree} in a few days only.
+
+Whereas the software development could profit from our previous
+experience in designing compilers and programming In general,
+such was not the case in the hardware sector, as our institute
+had neither hardware expertise nor fachlities. Ta gain
+experience and develop such facilities was, however, a prime
+challenge, and this project offered a welcome opportunity.
+
+From the start it was planned to base the Lilith computer on the
+2981 bit-slice processor, because one-chip processors avallable
+in 1977 did not offer the computing speed required for the
+efficient handling of the planned bitmap operations. This
+decision proved to be a good one. After 15 months of
+development, a First prototype was operattonal (without disk),
+proved to be too unreliable for extensive use, but confirmed the
+sensibility of the overall design. An additional year was needed
+te produce two identical prototypes which served to test the
+software that had been developed in the meantime. In the spring
+of 980, a team was formed at the Department of Electrical
+Engineering of Brigham Young University in Provo, Utah, to build
+a series of 2@ Lilith computers. This goal was achieved within @
+months by three graduating engineers and with the aid of student
+employees during the summer months. The cost per unit, not
+counting the development of the prototypes nor of organizing the
+production effort, but including labor and parts, in particular
+the 1@MB disk, was about SFr 28°86.
+
+In the meantime, a few important application programs were
+written at ETH, Including a text editor, an editor for drawing
+circult diagrams, and a window handler module. Some sample
+pictuces illustrating their use are shown in Fig 1. They are
+printed with the same resolution as seen on the screen.
+
+3. Modules and interfaces in Modula-2
+
+ee ie Sy fy ap a kr OA mee ee oe ee ee oe
+
+Perhaps the most important criterton of a language for
+programming large systems is how well it supports pragram
+modularization. The earliest facilities introduced for effective
+progcam decomposition was the concept of locality, i.e. the
+restriction of the validity of names {identifiers} to welli-
+
+===== PDF page 10 =====
+
+delineated parts of the program, such as a block or a procedure.
+This concept was introduced by Algol 66 and adopted in Algol 68,
+PL/I, and Pascal, among othecs. The range of validity is called
+& name's scope. Scopes can be nested, and the rule fis thet names
+valid in the scope‘s environment are also valid inside it,
+whereas names declared within the scope are invisible outside.
+This cule immadiately suggests a connection between the range of
+visibility (scope) of a name within the program teut, and the
+time of existence of the object associated with the name: as
+$c0m a& control enters the acope (procedure, block), the object
+must be created (e.g. storage must be allocated to a variable),
+and as soon as it leaves the scope, the object can be deleted,
+for it will no longer be visible. In spite of the tremendous
+value of this locality concept, there are two ceasons why it is
+inadequate for large programs.
+
+- there Is a need to hide objects, i.e. to retain them while
+they are invisible. This calis for s separation of visibility
+and existence: visiblity as a property of names, existence as
+a property of objects,
+
+- there is a need for closer control of visibility, !.0. for
+selection of particular names to be visible or invisible, in
+contrast to the “inheritance" of the total environment into a
+local scope.
+
+In Modula-2, we have therefore added the structure af a sodule
+to the structuce of the proceduce. Both structures appear
+syntactically as alvwost identical, but are governed by different
+rules about visibility of local names and existence of the
+associated objects:
+
+Pl. An object declaced local to a procedure exists only as lang
+a8 the proceduce remains activated.
+
+MI. An object local to a module exists as long a8 the enclosing
+procedure remains activated.
+
+P2. A name local to a procedure is Invisible outside the rext of
+that procedure, one visible in the environment is also
+visible inside the procedure.
+
+M2. A name local to a module is visible inside the module, and
+outside” tee, If it appears in the so-called export list in
+the module heading. A name visible in a module's anvironment
+is visible inside that module only ££ it appears in its so-
+called import List.
+
+From these rules, we can draw the following conclusion: A module
+itself has no "existence", since its local objects inherit. their
+lifetime from the module's environment (procedure}. Hence, the
+module ig a purely syntactic structure acting like a wall
+enclosing its local objects and controlling thelr visibility by
+means of export and iaport lists. Modules therefore need not be
+instantiated; there are no instances of a module. The module is
+merely a textual unit.
+
+===== PDF page 11 =====
+
+~-9-
+
+A typical example of a module is the fFallowing:
+
+MODULE a;
+EMPORT u,v}
+EXPORT P.q:
+
+VAR Ms wasnt
+PROCEDURE p{...);
+BEGIN ... M «+. END p;
+PROCEDURE q{...)3
+BEGIN ... K ..-. END q;
+BEGIN 1... DW wee Meee
+END ew
+
+This module owns three local objects: variable x and procedures
+p and q operating on x. [t exports p and q and hides x by not
+exporting it. The body of the module serves to Inittalize x; it
+is activated when the environment of m is activated (created).
+This example is typical, because {t shows how an object x can be
+hidden and haw access from outside is restricted to occur via
+specific procedures. This makes it possible to guarantee the
+existence of invariant conditions on x, independent of possible
+errors in the environment accessing x via p and q. Such is the
+very purpose of modularization.
+
+The typical purpose of a module is indeed to hide s set of
+interrelated objects, and the module is often identified by
+these objects, e.g. a table handier hiding the table, a scanner
+hiding the input streae, a terminal driver hiding the interface,
+or a disk system hiding the disk‘s structure and allocation
+strategy.
+
+The module concept as described above had been Introduced with
+the language Modula (5]. Modula~2 extends this concept in two
+important ways, namely by
+
+- qualified export mode, and
+~ subdivision of a module into two textual parts, the so-called
+deEinition and implementation parts.
+
+Qualified expert serves to avoid clashes between identical
+identifiers exported from different modules into the same
+enclasing scope. If an identifier x is exported in qualified
+mode from a module m, then the object associated with x needs to
+be denoted as m.x. The qualified mode is therefore appropriate,
+4€ the writer of m does not know the environment of m. This is
+not the usual case for nested modules; individual members of a
+programming team more typically design modules that lie on the
+same level, namely the outermost, or global level (that may be
+considered as being enclosed in a universal and empty scope). it
+is this case that is particularly important in the design of
+large systems, where a better separation of the specification of
+import and export lists from the description of the actual
+
+===== PDF page 12 =====
+
+~ 18-
+
+objects is desirable.
+
+Consequently, we divide a global module into two parts. The
+first is called a definition module; it containg the export list
+and specifications of the exported objects as far as relevant
+foc the user (client) of this module to verify the adherence to
+language rules (in particular type consistency). A definition
+module aiso specifies the types of its exported variables and
+the parameter lists of its exported procedures. The aecond part
+is called the implementation module. It contains (usually)
+import lists and all the details that need not concern the
+client, such as the bodies of procedures. The notlon of
+textually separate definition and implementation parts was
+pioneered by the language Mesa [6] and is here smoothly
+integrated with the module concept of Modula.
+
+Example:
+
+DEFINITION MODULE B;
+EXPORT QUALIFIED p,q;
+PROCEDURE p(...);
+PROCEDURE g{...)i
+
+END B.
+
+IMPLEMENTATIGN MODULE B;
+FROM A IMPORT u,v;
+VAR x: ...;
+PROCEDURE p(...}7
+BEGIN ... K «es U ee. END Pp;
+PROCEDURE q{...)3
+BEGIN eee Vi oes BR wes END qi
+BEGIN 1... % ses
+END B.
+
+4. Coreutines and processes
+
+te AOA he se em mm tH A eH reheat re rm: wm SH HL
+
+With the design of the Lilith computer we did not follow the
+fashionable trend to design a system consisting of several co-
+operating Concurrent processors, thereby avoiding one certain
+source of difficulties, namely their synchronization. the
+consequence for the language Modula~2 was that the concept of
+concurrent processes played a minor role only, whereas’ in
+Modula-! it had been the major theme. The primary idea had been
+to distinguish the logical process from the physical processor,
+allowing implementations to choose theirs own mechanisas for
+allocating processors to processes. Logical processes are served
+by time-sharing the processors, which may well have different
+characteristics and capabilities. The processes are implemented
+as coroutines, and transfers of control between them are laplied
+in statements that send signals or wait to receive signals,
+where the signal Is an abstract notlon represented as a data
+type. Each processor executes a sequence of coroutine segments,
+
+===== PDF page 13 =====
+
+and the processor scheduling can well be hidden behind the
+primitive operations on signals. The principal difference
+between processes (as in Modula~1)} and coroutines (as in Modula-
+2) (Is that the latter are explicitly identified whenever a
+transfer occurs, whereas processes are not, Since transfers are
+ijmplied by sending a named signal to some process which remains
+anonymous.
+
+It is well fn accordance with the premise of Modula-2 - namely
+to make primitives directly avallable to the programmer - to
+include coroutines instead of processes, because the latter are
+implemented by the former. As a consequence, Modula-2
+implementations need no “run-time system" and no fixed, built-in
+scheduling algorithe. There exists no data type Signal, but
+instead transfer of control from a coroutine P to @ coroutine Q
+{s specified explicitly by the statement TRANSFER(P,Q). Here P
+and Q are variables of the primitive type PROCESS, whose actual
+values are pointers to the coroutines’ workspace and state
+descriptors.
+
+Fucthermore, experience with Modula-! showed the advisability of
+separating interrupt-driven from “regular” processes, because an
+interrupt signals a tcansfer of service among processors within
+the same process. A programmer may adopt this advice by
+supplytng his own scheduling program. Modula-2 provides the
+appropriate mechanism for encapsulating such a user-defined
+scheduler in the form of its module structure. Naturally, such
+algorithms may also be provided in the form of library sodules.
+
+AS an example we list a scheduler reflecting the simple round-
+robin algorithm. The module exports the data type Signal and the
+operators StartProcess, Send, and Wait, which correspond to the
+language facilities of Modula-1. The example excludes, however,
+the treatment of intercupt-driven processes. (Note that the type
+Signal is exported in opaque mode such that its structures is
+invisible to the importer.) Both Send and Wait imply a coroutine
+transfer. The primitive operation TRANSFER is, like the data
+type PROCESS, imported from the module SYSTEM, which typically
+contains low-level facilities. High-level programs should
+preferrably rely on the process concept as presented by such a
+ProcessScheduler module, rather than on named coroutines§ and
+explicit transfer of control.
+
+DEFINITION MODULE ProcessSceduler;
+FROM SYSTEM IMPORT ADDRESS;
+EXPORT QUALIFIED Signal, StartProcess, Send, Wait;
+
+TYPE Signal;
+PROCEDURE StartProcess({P: PROC; A: ADDRESS; n: CARGINAL});
+PROCEDURE Send{VAR s: Signal};
+PROCEDURE Walt{VAR s: Signal};
+END ProcessScheduler,
+
+
+===== PDF page 14 =====
+
+~ 32 -
+
+IMPLEMENTATION MODULE ProcessScheduler 3
+FROM SYSTEM IMPORT PROCESS, ADDRESS, NWEWPROCESS, TRANSFER;
+
+TYPE Signal = POINTER TO ProceaaDescriptor,;
+ProcessDescripter =
+RECORD ready: BOOLEAN;
+pr: PROCESS,
+next: Signal; ¢* cing *)
+queue: Signal; {* waiting queue *)
+END ;
+
+VAR cp: Signal; {* current process *)}
+
+PROCEDURE StartProcess{P: PROC; A: ADDRESS; n: CAADIWAL};
+{* start P with workspace A of length na *}
+VAR t: Signal;
+BEGIN t := cp; MEW(cp};
+WITH cp” DO
+next rm t” next ready :* TRUE;
+qué@ue := NIL; t".next := cp
+END ;
+NEWPROCESS(P, A, n, cp".pr); TRANSFER(t”.pc, cp” .pr)
+END StartProcessa;
+
+PROCEDURE Send(VAR s: Signal);
+(* ‘vesume fiest process waiting for s *}
+VAA t: Signal;
+BEGIN
+If s § NIL THEN
+‘© 2* Cp; cp :* 83
+WITH cp” bo
+& t= queue; ready := TRUE; queue i+ NIL
+END ;
+TRANSPER(k* .pr, cp” .pr)
+END
+END Send;
+
+PROCEDURE Wait(VAR s: Signal);
+VAR c@, KI: Signal;
+BEGIN (* insert current process in queue s *)
+IF a = NIL THEN s := cp
+ELSE t@ := #; ue ,
+LooP ti :* té” queue;
+IF ti = NIL THEN
+ta" .queue i= cp; EXIT
+
+END ;
+te s= tlh
+END
+END ;
+
+cp” .ceady := FALSE; cp*.quaue := MIL;
+t@ := cp; (*now find next ready process*)
+
+~
+
+===== PDF page 15 =====
+
+- 13 -
+
+REPEAT cp := cp” .next;
+If cp = t@ THEN HALT (*deadlock*} END
+UNTIL cp” .ceady;
+TRANSFER({ 8" .pr, cp” .pr)
+END wait;
+
+BEGIN WEW({cp) 3
+WITH cp” DO
+next := cp; ceady := TRUE; queve := NIL
+END
+END ProcessScheduler .
+
+Interrupts are transfers of control that occur at unpredictable
+moments. We can regard an interrupt as equivalent to a statement
+
+TRANSFER(interrupted, interrupting)
+
+that is effectively inserted {a the program wherever control
+happens to be at the moment when the external interrupt request
+is applied. The variable “interrupting” denotes the process that
+ks destined to service the request, whereas the variable
+"interrupted? will be assigned the interrupted coroutine. The
+typical Interrupt handier is a device driver coroutine of the
+following pattern; P and Q are variables of the primttive type
+PROCESS.
+
+PROCEDURE driver;
+BEGIN initialization;
+LOOP ...
+start device; TRANSFER{QG,P}; ..-
+END
+END driver
+
+the driver process is created by the primitive statement
+NEWPROCESS (driver ,wap,n,Q)
+
+which allocates the procedure “driver® and the workspace wsp of
+size n to this coroutine, now identified by Q. It is
+subsequently activated by tha statement
+
+TRANSFER(P,Q)
+
+which assigns the starting coroutine (e.g. the main program} to
+P. After initiation of a device operation the statament
+TRANSFER (Q,P}, which symbolically stands for that part of the
+process which is executed by the device {4.e. another processor}
+actually returns control to P and assigns (the current state of&)
+the driver coroutine back to 9. Termination of the device
+operation causes an interrupt signal which (iF enabled)
+corresponds, as explained above, to an unwritten TRANSFER(P,Q).
+This signal again switches control back From the interupted to
+
+===== PDF page 16 =====
+
+- 1@~-
+
+the driver (interrupting) routine.
+
+Each Iintercupt signal ~ the Lilith computer offers 8 of them -
+is associated with its own variables P and Q at fixed locations.
+In order that further intecrupts remain disabled while the
+processor executes the interrupt routine, drivers are typically
+declared inside a module with specified “pricrity* that causes
+intercupct inhibition up to that specified "priority" level.
+
+This elegant conceptual unification of coroutine transfers and
+interrupt handling was made possible by an appropriately
+designed computer architecture and Instruction sec.
+
+5. The operating system
+
+eee ee er eee eee ee ee ee
+
+The most noticeable aspect of the Lilith operating system Mados
+is its orientation towards a single user. It is devoid of any
+protection mechanism against malicious programs that could
+hamper another usec's program, Since Medos is programmed in
+Modula, it benefits from the safety provided by Modula’s type
+consistency and various run-time checks. Ita safety features are
+“defensive*, but certainly not invulnerable, considering the
+Modula's facilities for low-level programming offered toa the
+brave programmer. In this regard, Medos follows the strategy of
+Piloc (9). In a first, superficial look it can be regarded as a
+collection of modules that ace imported by the cutrent program
+(and its imported modules}. Since a number of low-level sodules
+(such as the file system) are used by virtually every progran,
+they form a cesident section. This set of modules consists of
+three main parts;
+
+“Progranm"™ - storage allocation, program loader
+"Terminal" ~ drivers for keyboard and display
+*FileSystem* ~ disk driver and file adainistration
+
+The module Program exports the procedures.
+
+Calltname,sharedHeap, status}
+AllocateHeap(size)
+DeallocateHeap{size)
+
+of which the first effectively represents the loader. The nodule
+administers the entice store as a stack and loads called
+Programs sequentially. The remainder of the store is treated as
+data store. In this part, the data stack grows from one end and
+the heap from the other. The heap is used for variables that are
+allocated d@ynaaically by calis of AllocateHeap and
+DeallocateHeap, which merely move the pointer that denotes the
+separation between date stack and heap. Moce sophisticated
+allocators can be programmed which, however, will also refer to
+these basic procedures.
+
+
+===== PDF page 17 =====
+
+=~ FR =
+
+If a program PF calis the loader, the code and data segments of
+the loaded module OQ {and of the modules imported by Q and not
+already present) are stacked on top of those of P. The set of
+seguents thus loaded forms a new “level®, one higher than that
+of P. The loader operates as a coroutine, and each new level of
+program is represented as a coroutine too. This silght misuse of
+the coroutine Facility is justified by the convenience in which
+new sections of data and program {a level} can be administered,
+if described as a coroutine. Fig. 2. shows the storage layout and
+the implied transfers of control when a program is loaded from a
+caller at level 1.
+
+The set of resident modules forms level @. Its main program is
+called the Sequential Executive Kernel. It Invokes the loader
+which loadsa the command interpreter. This is merely 4 program
+that outputs a prompt character, reads a file name, and
+transmits the file identity to the kernel, which loads this File
+after the command interpreter has terminated and control is
+returned to level @. Loading of the main program usually
+requires the loading of further modules that are specified in
+import lists. Linking or binding of modules is simplified by the
+architecture of the Lilith computer such that it is performed
+directly upon program loading. Fig. 3 shows a typical sequence
+of programs, and how they occupy the store,
+
+Since a program is loaded only after removal of the command
+interpreter, and because the command interpreter typically has
+ample time to process the siow Input from the keyboard, it can
+be dezigned with additional sophistication. It can search the
+file cable for program Files whose names match with the input so
+far received and extend it as fac as {it is unambiguous. For
+example, if File names ASCD snd ABCE are present, and no others
+starting with A, it may display both names after receiving °A?"
+and then allow continuation after receiving either Dor ©. This
+is a small but typical example of providing a convenient user
+intectace without additional burden on the user's program.
+
+The entire mechanism for loading and allocating is programmed
+exclusively in Modula-2; this includes the subtle pofnt of
+changing our view of a program as data before to code after its
+loading. In Modula-2, this is possible without resorting to
+tricky programming and without the escape to small sections of
+assembly code. ;
+
+The second principa) part of the set of resident modules handles
+input from the keyboard and output to the display. This module
+is called Terminal. The input stream fetched by the procedure
+Read (contained in Terminal) flows through a switch that allows
+reading from a file instead of the keyboard, Because the command
+interpreter also calls Read, that File can even be a command
+file. The output stream, which is fed by calling the procedure
+Write, is fed to the low-level module TextScreen that simulates
+sequential writing and generates the bit pattern for each
+
+===== PDF page 18 =====
+
+- 6
+Character according to a default font.
+
+The module FileSystem constitutes the thicd major part of the
+resident system. Filles are used for three main purposes:
+
+~ long-term storage of data on permanent, named files,
+- communication among programs,
+- secondary storage of data on temporary, unnamed Elles,
+
+We distinguish between the naming and abstract definition of
+files ss extendable arrays of elements (FileSystem) and the
+physical implementation of files on the disk (DiskSystem}). The
+
+rogrammes refers to files through the module FileSystem which
+fn turn calis procedures of the module DiskSystem hiding the
+details of theirs physical cepresentation.
+
+FileSystem exports the type File and operations on this type for
+opening (creating), naming, reading, writing, modifying,
+positioning, and closing files. Normally files ace regarded 4s
+streams of either words or characters; writing occurs at the end
+of the stream only, and if writing is requested at some position
+other than the end, the file's tail is lost and deallocated.
+Although it is also possible to modify files, i.e. overwrite
+them, the abstraction of the stream is the preferred view af
+files.
+
+The module DiskSystem iaplements Files on the Honeyweli-Bull
+D-12@ disk. It ig designed according to the follawing main
+requirements:
+
+fast access, in particular If strictly sequential,
+robustness against hard- and software failures,
+accommodation of a large number of {mostly short) files,
+economical use of storage space.
+
+eet
+
+The follewing scheme was chosen as a compromise between the
+various design objectives: Space is allocated in blocks of 2648
+bytes. This results in a memory resident allocation table cf 392
+words (one per cylinder), each bit indicating whether or not its
+corcesponding block {is allocated to some file. Each block
+corresponds to 8 disk sectors, equally spaced on the same
+cylinder. A separate file, allocated at a fixed place, is called
+FileDirectary and consists of flle descriptors. Every tile is
+identified by the index of its {first} descriptor (= File
+number), and each descriptor contains a table of addresses of
+the blocks which constitute the file. Additionally, the
+descciptor specifies various properties of the file, such as its
+length, creation date, last modification date, wheather it is
+permanent, protected, atc. Upon startup, the system reads the
+entice FileDirectory and computes the allocation table.
+
+Unnamed files are released either by closing them of when the
+
+===== PDF page 19 =====
+
+-~wW7-
+
+System is started. They are used 48 temporary files during
+execution of a program. For long term storage of data, a File
+has te be named. To administer permanent files, the module
+DiskSystem waintains another Elle (aise placed in a fixed
+location) called the Name Directory. Each entry consists of a
+file name and the number of the associated File. The procedure
+Lookup(f,name,create}) is used to search the name in the Name
+Directory and connects the file (if found) with the file
+variable f. The parameter ‘“‘create* allows to ask for the
+creation and naming of a new File, if the specified name was not
+Found (see Flg. 4}.
+
+A fourth, but effectivly hidden part of the resident system is
+called the Monitor. [Tt contains two auxiliary processes that are
+used to monitor the third, namely the main precess of the user.
+The auxiliary processes are called Clock and Trap {Fig. 5}.
+Clock is invoked 56 times per second. It updates a variable
+called time, monitors the keyboard by polling, and buffers
+keyboard input, allowing for typing ahead. .
+
+Trap is invoked by varicus instructions detecting abnormal
+conditions, such as stack overflow, arithmetic overflow, index
+out of range, access to picture elements outside the specified
+bitmap, the standard procedure HALT, etc. The Trap process then
+may Store the state of the main process (essentially a dump} on
+the disk for possible later inspection by a debugger program,
+and restarts the main process at the kernel level.
+
+Typing the control character <ctrloC is detected by Clock and
+causes an abortion of the main process in the same manner as a
+trap. Evidently, abnormal situations are here handled by
+coroutine transfers instead of an additional exception facility
+provided in the programming language. The auxilfary coroutine
+then regards the aborted coroutine as data {instead of as a
+Program} and is thereby able to reset it to a state where
+continuation is sensible.
+
+Fig. 6 shows the principal modules of Medos with arrows denoting
+calls of procedures. Usually, these arrows are identical ta
+those denoting the import/export dependences among modules.
+Exceptions to this rule occur through the use of procedure
+variables.
+
+6. Separate compilation of modules
+
+ee ee ee ee a ee ee a ee re er ee ee ee
+
+For ceasons of convenience and economy, large system programs
+need to be compiled in parts. [t is only natural that these
+parts be the ones that from a logical point of view were
+designed as relatively independent units. The module is the
+obvious choice for the unit of compilation. Definition and
+implementation modules are therefore called compilation units.
+
+===== PDF page 20 =====
+
+~ TR ~
+
+The idea of compilation In parts is as old as Fortran and even
+assembler code. In high-level ianguages with data types the
+problem of partiai compilation is of considerable complexity: we
+wish that type consistence checking is Fully maintained accross
+module boundaries. In fact, experience has shown that this is
+when it is most needed to avoid catastrophic errors. In order to
+recognize inconsistencies such as type misaatches, incorrect
+nugber or order of parameters, etc., a8 early as possible, they
+must be detectable by the compiler. The compiler therefore must
+have access to information about al] fmported objects. This is
+accomplished as follows {7]}:
+
+Assume that a module B depends on, i.e. imports objects from a
+module A. Therefore, module A has to be complied first. During
+its compilation, th compiler generates, apart from a code file
+for A, a symbol file. Compilation of B subsequently accesses
+that symbol file. More accurately, program & can - according to
+the cules of the language - refer to information of A's
+definition part only. Thus, the symbol file is an extcact only
+of the information available during compilation of A. Since only
+definition modules are capable of exporting, the symbol file is
+the result of compiling the definition module A, while code fs
+the result of compiling implementation {er program) acdules
+only.
+
+This scheme ~ in particular the separation of definition and
+implementation parts - has important consequences foc the manner
+in which systems are developed. A definition madule constitutes
+the interface. between its implementation part and its clients.
+Effectively the scheme forces the programmer to define
+interfaces first, for, whenever a definition module is (changed
+and) recompiled, all its importers {clients) have to be
+recompiled too, However, it is possible to change and recoapile
+implementation modules without that far-reaching and costly
+consequence.
+
+It should be noted that the consequences of this chronological
+ordering of compilations are Less severe than aight be
+anticipated due to the fact that the laporters are usually
+implementation modules. Hence a change in a low-level module ~ a
+module that resides low in the hierarchical chain of
+dependencies - need not produce a chain reaction of
+recompilation up toa all ultimate clients. The appropriate
+decomposition of a planned system into modules is nevertheless a
+most important aspect. of competent programming. Often the
+decomposition has to be decided at an early stage when inaight
+into many aspects of a system are still hazy. [Its success
+therefore largely depends aon the engineer's previous experience
+with similar tasks,
+
+Learning how to deal effectively with a new facility offered by
+a programming language [s # long-term grocess. The modula
+facility forces the programmer team to make those decisions
+
+===== PDF page 21 =====
+
+~ 19 -
+
+first that must be made first {8}. One lesson learned so far Is
+that a module typically centers around a data structure, and
+that fit is this data structure rather than the exported
+operations that characterize {t.
+
+7. The architecture of the Lilith computer
+
+ee eT
+
+One of the challenges tn designing a computer lies in finding a
+structure and an instruction set which yield a high density of
+code and ai relatively simple algorithm for code generation. A
+premise of this project was that the computer had to be designed
+according to the language in which it was ta be programmed. This
+resulted in a quite unconventional architecture. No attempt was
+made to make the Instruction set suitable for "hand coding"; in
+fact, programming in machine code would be quite cumbersone,
+even if an assembler were available.
+
+The Lilith computer is based on a stack architecture, Stack
+computers are by no means novel as such. Their history dates
+back to the early 68s with the English Electric KDP9 and the
+Burroughs 85986 as ploneers. The Lilith architecture adopts the
+stack principle without compromise, and its instruction set is
+chosen to obtain a high density of code requiring only straight-
+forward algorithms for instruction selection. The code is a byte
+stream. Each Instruction consists of one or several bytes. The
+high density is achieved not only by implicit addressing of
+intermediste results in expressions, but mainly by the provision
+of different address lengths and suitable addressing modes. In
+order to explain these modes, we need to inspect the overall
+storage organtzation at run-tlme. In contrast to earlier stack
+computers, not only procedures play an important role, but also
+wodules. The underlying premise is that objects local to the
+lecation of the present computation are accessed most fequently
+- and therefore require fast access by short instructions -
+whereas access to cemote objects Is relatively rare and requires
+less efficiency, Fast access is obtained by retaining
+"intermediate results” of address computations in fast registers
+(base address), in the expectation that they willl be reused
+Frequently, and that thereby their recomputation can be avoided.
+Several base address registers are used in the Lilith computer.
+
+The origin of «s11 address computations is a table with base
+addresses of all currently loaded data frames (see Fig. 7). A
+data frame is a contiguous area of store allocated to the
+{static} varfables of a given module. By “module” we refer here
+and subsequently to compilation units; this excludes inner
+inested) modules. Each loaded module has a number which is used
+as index toa that FErame table. The table resides at a fixed
+location and has a fixed length. The entry belonging to the
+module of which code is executed currantly, is retained in the
+base address register G. It is the base address of "Global
+
+===== PDF page 22 =====
+
+=» 26 -
+
+variables* in the sense of Algol of Pascal. G has to be reloaded
+whenever control transfers from one wmodule to another. Data
+frames are static in the same sense that they sre "“pecmanent”
+for the duration of a program execution, with the (rare)
+exception of overlays performed by calls of the leader.
+
+Data local to procedures are allocated in a stack which grows
+when 3 procedure is called and shrinks when it is terminated.
+Each coroutine {process} {is allocated an area of the store,
+called ai stack frame, when it is started, and which serves as
+the caroutine's workspace. The base address of the stack frame
+belonging to the coroutine currently under axecution is stored
+in the register P, that of the last location allocated in this
+gtack frame In rcegister S, and the end of the workspace is
+designated by register H. P is used when a transfer from one
+coroutine to another coroutine occurs, S when a procedure is
+called or terminated. Each stack frame contains the hiercacchy of
+data segments representing the variables local to the activated
+procedures. They are Linked by the so-called dynamic chain of
+procedure activations. The base address of the last segment
+Created is retained in cegister L (foc Local data).
+
+Local data are semi-dynamic in the sense that they are allocated
+for the duration of a procedure activation only. However, thair
+addresses are determined by tha compiler as offsets relative to
+the base address of thelr owner. Truly dynaaic data are those
+allocated by explicitly programmed statements in an area of the
+stoce called heap. This storage area is managed by a utility
+module called Storage; these variables ace accessed via pointer
+values. As in Pascal, pointers ace bound to a given type,
+providing additional security in pointer handling.
+
+Each loaded module owns a data Frame and also a code frame, @
+contiguous area of store containing the code of al] tts
+procedures. The base address of the code frame of the currently
+executing module is retained in cagister F. Its value is used
+when calling a procedure, which is identifled by a number used
+as index to a table containing the starting addresses of ali
+procedures in a given module. This table resides in the headex
+of the code frame. Using such an index Instead of absolute
+addresses contributes to higher code density, particularly slace
+procedure calls are vary frequent instructions. The value of
+cregister F is changed whensver contro} transfers between
+modules, Jump addresses ara relative to the F-register value.
+
+&. The Lilith instruction set
+
+Se ed
+
+Instructions consist of one of several bytes, They can be
+divided into four basic categories: Load and store Enstructions,
+operators, control instructiona, and miscellaneous finatcuctions:
+
+===== PDF page 23 =====
+
+~~ 21 -
+
+The load and store instructions transfer data between memory
+(stack or teap) and the top of the stack, where they are
+accessed by operators. The top of the stack, where data are
+loaded a8 intermediate results (anonymous varlabies) is also
+Galied the expression stack. Load or store instructions rcequire
+4 Single address only bacauvse the stack address is implicit;
+they are further subdivided according to the following criteria:
+
+~ data size: the transferred data are a word {16 bits), a double
+word, or a byte (halfword). *
+
+- addressing mode: local, global, external, stack, indexed, and
+immediate mode {the latter for load instructions only).
+
+~ address length: 4, 8, oc 16 bit address (see Fig. 8).
+
+The presence of different address lengths suggests that
+variables with frequent access be allocated with small offsets,
+Our present compiler does not perform any such optisization. The
+gain to be made does not appear to be overwhelming. The set of
+divectly accessed (statically declared} variables is usually
+quite small, because structured variables are addressed
+indirectly.
+
+The various addressing modes are defined as follows {(m and nh
+denote instruction parameters, and a the resulting address):
+
+~ Local mode: a = Len, used For variables local to procedures.
+
+- Global mode; a = Gtn, used for global variables in the current
+aodule.
+
+~ Stack mode: a = gin, where s is the value on top of the stack;
+mode used For indirect addressing and access via pointers.
+
+~ External mode: a = T(mjtn, fT %$is the table of data frame
+addresses, m a module number; mode used for external variables
+imported from other modules.
+
+~ Indexed mode: a = 51 + k*s2, 51 ig the array's base address,
+S2 the computed index {s!, s2 on stack}, and k is a multiplier
+depending on the size of the accessed data type.
+
+~ Immediate mode: a =n, The loaded vaiue is the parameter
+itself; mode used to generate constants.
+
+The above explanations are given in this detall in order to show -
+that the constructs defined in the programming language are
+Strongly reflected by, i.e. have directly influenced, the design
+of the Lilith architecture. The beneficlal consequence is not
+only ease of compilation, but simplicity of the Linking loader.
+Whereas our Modula-2 system for the PDP-11 computer for good
+reasons requires a linker, such its not necessary for the Lilith
+implementation. A linker collects the code Files of all required
+modules and links them together into an absolute for
+relocatable) store image. This task can be performed directly by
+the loader, because it only has to Insert module numbers (table
+indices) in instructions with external addressing mode.
+
+The second category of instructions are the operators, They take
+
+===== PDF page 24 =====
+
+- 22 ~-
+
+operands from the top of the stack and replace them by the
+result. The Lilith instruction set includes operators for
+CARDINAL {unsigned}, INTEGER (signed), double-precision,
+floating-point, BOOLEAN, and set arithmetic. tt directly
+raflects the operations avallabie in Modula~2.
+
+The orientation towards a clean stack architecture also required
+a full set of comparison Instructions which generate a BOOLEAN
+result. Distinct sets are provided for CARDINAL and INTEGER
+comparison, The distinction between CARDINAL and INTEGER
+arithmetic is partially due to the desire to be able ta use ail
+bits of a word to represent unsigned numbers, such as addresses.
+It would be of a lesser importance, if the wordsize were larger.
+However, our experience shows that it is desicable also Erom a
+purely logical point of view to declare variables to he non-
+nagative, if in Fact a negative value does never occur. Most of
+Our programs require variables of the type CARDINAL, whereas the
+type INTEGER occurs only rarely. Although using 2's complement
+representation for negative values, addition and subtraction are
+impiemented by the same hardware operations for hoth kinds cf
+acithmetic, they differ in thelr conditions indicating overflow.
+
+Control instructions include procedure calls and jumps.
+Conditional jumps are generated for IF, WHILE, REPEAT, and LOOP
+Statements. They fetch their BOOLEAN operand from the stack.
+Special control instructions mirror the CASE and FOR statements.
+
+Different calls are used for procedures declared in the cucrent
+module and for these in other modules. For local procedures
+there exist call instructions with short 4-bit addresses, as
+they occur rather frequently. Calls for external procedures not
+only inchude an address parameter, but also a acdule number to
+be updated by the loader. Furthermore, an instruction is
+provided for so-called formal prosedures, f.e. procedures that
+
+are either supplied as parameters of assigned to procedure
+variables,
+
+There alsa exists an instruction for the transfer of control
+between coroutines. Various instructions may cause a trap, if
+the result’ cannot be computed. Such a trap is considered like an
+interrupt requested by the processor itself, and corresponds to
+a coroutine transfer with fixed parameters. The same mechanisa
+is activated by the TRAP instruction (which corresponds to a
+HALT statement in Modula).
+
+Arithmetic operators generate traps when unable to compute the
+correct rasult (e.g. overflow). Traps from CARDINAL and INTEGER
+arithmetic can be suppressed {masked) upon request; the
+programmer is then presumably aware that results are computed
+modulo 2°16. Also, lead and stare instructions generate a trap,
+if theic address is NIL. Thia test requires a single alcro
+tnstruction only. The routines for biteap handling generate
+traps, if’ attempting to access data outside the specified
+
+===== PDF page 25 =====
+
+- 23 -
+
+bitmap. All these test are quite inexpensive (but not free).
+
+A test for an array index lying within the specified bounds, or
+for a value ta be within the subrange admitted by a variable, Is
+more complicated. It requires two comparisons with arbitrary
+values. Therefore, the M-code contains an instruction for an “in
+range” test. The programmer may choose to omit these tests by
+selecting a compiler option that suppresses the generation of
+these test instructions.
+
+These extensive checking Facilities reflect our strong belief in
+designing an tmplementation (including the hardware) which
+properly supports a language's abstractions. For example, if the
+language provides the data type CARDINAL, its implementations
+should signal an error, if a negative result appears, just as [ft
+should signal an error, when a non-existing element of an array
+is identified. Omissions in this regard are ta be considered as
+inadequacy in implementation. Nevertheless, the argument whether
+oF not the experienced and conscientious programmer should be
+burdened with these “redundant® checks remains open. Our choice
+is to give the programmer the option to suppress at least the
+more expensive checks, at his own peril.
+
+The category of miscellaneous instructions contains operators
+for ceading and writing data on the input/output channels, and
+four instructions used for operating on bitmaps: The DDT
+instruction (display dot) writes a single dot at aie specified
+coordinate, REPL replicates a bit pattern over a rectangle - a
+so-called block - in a given bitmap, The coordinates of this
+block are relative to the specified bitmap and are given in
+terms of dot coordinates rather than word addresses, The BBLT
+instruction {bit Block transfer) copies a source block into a
+destination block. The DCH instruction (display character)
+coples the bitmap of a character {given its ASCII code) from a
+font table into a specified place of a bitmap.
+
+The function of these bitmap instructions could well be coded in
+Modula-2 prograas. Instead, they are included as single
+instructions represented by micro-coded routines. The primary
+reason is efficiency. The routines include checks against
+inconsistent parameters, such as blocks that do not fully Lie
+within the bltmap. An essential detail is that they use the same
+convention about parameters as do regular procedures and
+operators: parametecs are always passed via the stack.. Modula-2
+for Lilith offers a facility to use these instructions as if
+they were programmed as regular procedures. This uniformity of
+parameter passing has proved to be an invaluable asset.
+
+Some analysis of representative programs reveals that M-code
+yields ai significantly higher density of compiled code than do
+conventional instruction sets. Compared with the code compiled
+for the ublquftous PDP-11, we obtained an improvement factor of
+3.9. This implles that code for the same program occupies about
+
+===== PDF page 26 =====
+
+~ 24 -
+
+one quarter of the memory space in the Lilith computer than in a
+PDP-11. This factor is noteworthy even in times of rapidiy
+decreasing meaory prices}
+
+The principal centribution to this result stems From the short
+address fields. Oominant are the counts of Joad and store
+instructions; they address the stack implicitly and hence need
+only one address field. Access to local variables is most
+frequent; global variables are addressed about half as often,
+and external vaciables occur rarely. Jumps account for about
+Wat of all instructions, and procedure calis are about equally
+frequent. The following table displays percentage figures
+obtained from four programs {of different authors) for the most
+frequent instruction classes.
+
+I-byte instr. 78.2 71.7 62.8 72.5
+2-byte instr. 16.6 17.3 12.6 12.8
+3-byte instr. 13.1 11. 24.5 15.4
+Load immediate 15.3 14.2 17.3 15.2
+Load local 16.3 24.6 16.3 19.3
+Load global 6.2 $.2 3.7. 7.9
+Load indirece 5.2 6.4 §.5 §.8
+Store local 5.8 6.5 5.8 6.@
+Store global 2.6 1.1 1.6 3.3
+Store indirect 4.2 3.8 i.) 4.3
+Operators 5.6 5.7 4.8 5.9
+Comparators 3.9 4.4 5.6 3.7
+Jumps 7.3 7.7 9.3 6.2
+Calls 6.4 a.1 14.5 6.9
+Total counts (1008) 11852 7378 7936 2634
+
+instructions are executed by a micro-coded program called the
+Interpreter, which may well he expressed in Modula; this
+algorithmic definition of the Lilith instruction set has proved
+to be extremely valuable as interface between the msicro-
+programmer and the compller designer.
+
+9. The Lilith hardware structure
+
+see eee eee ee eee ee ee eo
+
+The following requirements determined the design of the hardware
+
+most significantly:
+
+~ fast implementation of the M-code interpreter, in particular
+of tits stack architecture,
+
+- the need for efEicient implementation of the bitmap
+instructions which involve a large amount of bit pushing and
+
+===== PDF page 27 =====
+
+~ 25 o
+
+partial word accesses (bit addressing). :
+~ high bandwidth between memory and display for continuous
+refreshing.
+~ the desire for a simple structure with a relatively large,
+homogencus store,
+- ease of serviceabibity. ,
+The computing power required by the bitmap Instructions
+eliminated the choice of a one~chip processor. An even stronger
+reason against such a choice was the project's purpose to find a
+hardware architecture truly suitable for use with cede compiled
+from a high-level language. The bit-slice processor Am2908)
+oftEered an ideal solution between a one~chip processor and the
+complete design of a unit built with SSI and MSI components. It
+allows for a basic instruction cycle that is about a fourth of a
+memory cycle (158 ns}. This is a good relation considering the
+average amount of processing requiced between memory accesses,
+
+The processor is built around a 16-bit wide bus connecting the
+arithmetic-logic unit {ALU) with the memory for transfer of data
+and addresses. Also connected are the instruction fetch unit
+(IFU), the disk and display controllers, and the interfaces to
+the standard low-speed 1/0 devices keyboard, Mouse, and serial
+¥24 > «(RS232)} bine. Bus sources and destinations are specifted in
+each emicro~instruction by 4-bit flelds which are directly
+decoded. The bus uses tri-state logic.
+
+The refreshing of the full screen requires a signal with a
+bandwidth of 13 MHz, 1€ interlacing and as rate of 58 half
+Pictures per second is assumed. This implies that on the average
+one 16-bit word has to be fetched every 1.1 us, which implies
+that memory would be available to the processor about 58% of the
+time. This unacceptably low rate calls for a memory with an
+access path wider than 16 bits. It was decided to implement a
+64-bit wide memory.
+
+A thied candidate for direct memory access is the instruction
+Stream. Like the display, this port requires sequential reading
+only and therefore can benefit from a wide access path feeding
+an internal buffer. This organization reduces the average time
+that the memory is devoted to display and instruction fetching,
+i.e. where it {s inaccessible to the data port of the main
+processor, to about 1@%, The overall structure of the Lilith
+hardware js shown in Fig. 9. Its heart is the microcontrol unit ,
+{MCU} which contains the clock and controls the instruction
+stream,
+
+9.1 The micro-control unit
+
+et te ae ee Oe ee ee ee
+
+The micro-control unit (MCU) consists primarily of a memory for
+the microcode, &@ micro- instruction register (MIR}, an address
+inceementer, and some decoding logic. A micro- instruction
+
+===== PDF page 28 =====
+
+-~ 26 -
+
+Consists of 48 bits; its formats are shown in Fig. 18. The
+micro-instruction address is a 12 bit integer, hence the memory
+may have at most 4K locations. Actually, only 2K are used and
+Implemented as a cead-only store (ROM). An additianal 2K RAM may
+be supplied. Approximately 1K is used by initialization routines
+(bootstrap loader) and the M-code interpreter, and 1K is needed
+for the bitmap routines and the floating-point iastructions.
+
+Fig. 11 shows the structure of the aicra-control unit. The next
+instruction's address is taken from one of several sources:
+
+the incrementer (normal case)
+
+an address stack (subroutine return)
+
+the current instruction (microcode jump)
+
+a table of addresses of routines which correspond to M-codes
+according to a pending interrupt request.
+
+it ¢ ie
+
+The addresses are generated by Am291} bit-slice controllers
+which contain an incrementer and a short stack for subroutine
+return addresses. For jumps, the next address is supplied from
+Sources external to the 2911. Conventional jumps take the
+address directly from the instruction register (MIR). Exceptions
+are the jumps to the start of the microcode routine representing
+the next M-~-code instruction. Here the address is taken from a
+ROM which maps the &<bit M-code into a 12-bit address. This
+exception is signalled by a micro~instruction whose source field
+Value causes the address to be selected from the map ROM. An
+exception to this exception occurs if an (unmasked) Interrupt
+request is pending, in which case the next address is the fixed
+number assigned to the requesting line. Thereby the M-code
+Sequence can be interrupted without requiring any additional
+micro-instructions, and the transition to the next emicro~
+instruction routine is initiated by a single instruction at the
+end of each routine.
+
+A tag bit of each micro-instruction determines whether it is to
+be interpreted as a reqular ar as a jump insteuction. During
+execution of the latter the main processor ia disabled. Jumps
+are conditional upon the state of the aain processor’s condition
+code ceqgister determined by the ALU‘s result computed during the
+Previous cycle.
+
+9.2 The arithmetic logic unit
+
+eH eR A a a er SY a pr tO a
+
+The ALU‘s heart is a 2981 bit-slice processor. It contains the
+legic for integer arithmetic (addition) and foe bit-parallel
+logical operations, and a set of 16 fast registers. Half of them
+are used for global state variables of the M-code interpreter,
+the others as work cegisters local te each sicrocede routine.
+The 2981 core is augmented by two fachlities dictated by the
+requirements of the stack architecture and by the bitmap
+toutines: a East stack memory and a barrel shifter (Fig. $2).
+
+===== PDF page 29 =====
+
+-~ 27 -
+
+The fast stack is a store of 16 locations (16 bit wide} and = an
+address incrementer/decrementer. This memory holds the
+intermediate results during evaluation of expressions and
+Statements, and must be regarded as logically being part of the
+{main} stack, but physically separate. Load instructions fetch
+data from the (main) stack in memory and push them onto the fast
+expression stack. Store instructions pop the expression stack
+and deposit data in main memory. As a consequence, each such
+instruction takes a single main memory cycle only. More
+precisely, data loaded from and stored Into the main stack are
+transferred to and from a register In the 2941 processor itself,
+while during the same cycle this T-register is saved {or
+restored) into (from) the expression stack:
+
+Load: push T onto stack; Bus -> T
+Store: T -> Bus; pop stack into T
+
+Operations such as addition, comparison, AND, OR, etec., can also
+be performed in a single cycle, because beth operands are
+immediately accessible:
+
+Add: T + top stack -> Tj; pop stack
+
+The hardware represents a genuine stack in so far as the cufrent
+stack top is the only accessible element, and that its address
+is ftnaccessible to the programmer. This address is generated by
+a 4-bit up/down counter and directly fed to a 16x16 high-speed
+RAM. A slight complication arises because address incrementatian
+for a pop must occur before the data fetch, whereas the
+decrementing for a push must occur after the store. However,
+both address counting and data access must be performed during
+the same clock cycle. The solution is found in using an extra
+adder and to operate according to the Following scheme:
+
+push: DEC(x}; S{x+t) := data
+pop: INCix); data :* S{[x]
+
+The circuit of the entire stack mechanism is shown tn Fig. 13.
+it may be surprising that the fast stack has a depth of only 16.
+In practice, this proved to be ample. It should be noted that
+the compiler can keep track of the number of stack locations
+loaded, and hence no runtime stack overflow can occur, nor need
+it be monitored, The stack is empty after execution of each
+Statement. In the case of function procedures, the expression
+stack has to be saved into the main stack before, and restored
+after the cali. Special M-code instructions are provided for
+this purpose,
+
+The barcel shifter is prefixed to the input lines of the 2981
+processor. %t allows the rotation of data by any number of bit
+positions between @ and 15. Together with the logical
+instructions (AND, OR) ‘it provides the necessary speed for
+partial word handling extensively used in a11 bitmap operations,
+
+===== PDF page 30 =====
+
+- 28 -
+
+It is designed such that it can also generate masks of @ to 15
+bits in one cycle. The shift count (mask length) can either be
+taken from a field in the micro-instruction itself, of from a
+special 4-bit shift count cegister, also contained in the ALU.
+
+9.3. The memory
+
+The memory is built with 16K dynamic RAM chips distributed on
+four boards, each being organized as a 16K*%32 block. For
+ceading, 32 bits are accessed simultaneously from two of the
+four boards. Multiplexors select 8 of the 32 bits for output to
+the processor bus via the so-called CPU port. For writing, the
+Same connection is used, and the data are fed to four chips in
+parallel, of which only one is enabled through the chip select
+signal. Fig. 14 shows the scheme for two boards; together they
+represent a 64K*16 bit memory for writing, of a J6K*64 bit
+memory for reading..
+
+The choice of a 64-bit wide access path guarantees the necessary
+memory signal bandwidth, but it also poses significant
+electrical problems that should not be undecestimated. Their
+mastery is an order of magnitude more difficult than the
+handling of conventional 8-bit microcomputer systems.
+
+Processor and display operate asynchronously. Hence, an arbiter
+mechanism is needed for controlling memory access. It can easily
+be extended to accommodate several instead of only two ports.
+Each port is assigned a fixed priority, and the request from the
+source with highest rank among those pending is honoured. Fig.
+15 shows the circuit used; it contains cascaded priority latches
+that cetain posted requests. Also shown is the circuit used for
+the synchronization of a requestor (the CPU port as an example)
+and the memory, which operate on separate clocks. The priority
+latch is common to all ports, the other parts are individually
+replicated for each port. Fig. 16 shows the signal timing: If
+the port requests a memory cycle, the bus data, representing an
+address, are latched in the memory address register MAR, the
+port is marked busy, and the request is passed on to the
+arbitec. Unless a request with higher priority is present, the
+signal CPU.SEL goes high, indicating that the memory cycle now
+Started belongs to the CPU port and MAR is gated to the address
+lines. When terminated, the signal CLR resets the busy latch,
+indicating to the polling CPU that its request has been served.
+
+9.4. The Instruction fetch unit
+
+Instcuctions are fetched via a separate memory port controlled
+by the instruction fetch unit (IFU). This unit contains its own
+address registers (PC,F) and an 6-byte buffer. The buffer can be
+cegarded as a small cache memory and is particularly effective
+because access is mostly sequential. Reloading occurs when
+
+===== PDF page 31 =====
+
+- 29 -
+
+either the buffer is eapty, or when a new address is fed to the
+PC by a control instruction. The IFU contains its own address
+incrementer {the PC register is a counter) and an adder forming
+the sum of the PC and F values. This adder is 18 bits wide. A
+byte is fetched from the buffer and the address is incremented
+
+whenever the micro-controller executes a jump enabling the map .
+
+ROM. Fig. 17 is a block diagram of the IFU.
+
+ae ee eee
+
+The Mouse ts a device to designate positions on the display
+screen. It operates on the principle that movements of the
+operator's hand on his desk are sensed, rather than on the
+recording of precise, absolute coordinates. A cursor is
+displayed (by appropriate programming) on the screen, changing
+its position according to the signals received from the Mouse.
+Hence, positioning of the cursor can be as accurate as the
+display's reselution allows, without reguiring a high-pracision
+digitizer device, The Mouse is also equipped with three
+pushbuttons {eyes) ar.i is connected to the keyboard by a thin
+tail; hence its name.
+
+The movements are transmitted via a ball to two perpendicular
+wheels, whose “spokes” are seen by a light sensor. The direction
+of their turning is perceived by sampling two signals received
+from spokes which are offset. If we combine the two binary
+signals and represent them as numbers to the base @, the wheels‘
+turning results in sample value sequences 8,2,3,1;@, «2. oF
+wae tare e+ depending on the sense of their rotation (sea
+Fig. 18}.
+
+The interface for the Mouse contains two counters for the x- and
+y-coordinates. They are incremented or decremented whenever a
+transition of the input signals occurs as indicated by the two
+above sequences. A state machine registers the signal values
+sampled at two consecutive clock ticks; a ROM is used to map
+them Into the necessary counting pulses, .
+
+9.6. The Monitor
+
+wee we ee eee
+
+The Monitor is an additional unit which is not present in the
+computer under norma] circumstances, but for which nevertheless
+a permanent slot is reserved, such that it can be Inserted any
+time. It represents a small computer of its own, and it has the
+capability to take full control over the Lilith processor. It is
+therefore used for servicing when the Lilith hardware fatis, and
+Et played a most crucial role during the entire development and
+debugging phases of the Lilith computer.
+
+The Monitor's heart is a Motorola 6882 one-chip microprocessor,
+augmented by a 2K byte ROM and a 4K byte RAM, interface
+
+===== PDF page 32 =====
+
+- 34 -
+
+registers to the Lilith hardware, and a serial line interface to
+@ tecminal {UART). Its block diagram is given in Fig. 19. The
+Monitor can
+
+~ read the microinstruction register (MIR}
+
+- supply the next microinstruction (disabling MIR)
+
+- read the micro-program counter (2911)
+
+supply the next instruction address {disabling 2911)
+read the processor bus
+
+feed data to the processor bus
+
+disable the processor clock (hait)
+
+send clock pulses (single or multiple step}
+
+For debugging and servicing, an elaborate set of programa was
+developed. In addition to a standard “operating system” residing
+in the ROMs, test programs can be loaded into the RAM From 4
+terminal, We extensively used an HP 26454 terminal with tape
+cassettes as our programs library store. When a new Lilith
+machine is to be tested, the Monitor is used ta Firat test the
+MCU board, then to test the ALU board, thereafter the memory (in
+conjunction with MCU and ALU), then the IfU, and Elinally the
+interface boards. The Monitor nat only made a front panel
+superfluous, but allowed the construction of the entire computer
+with the aid of only an oscilloscope and, very rarely, a seall
+legic state analyzer.
+
+9.7. The physical layout
+
+Nae Mma a st fd hh rt Sl ss Ag th a Mir te
+
+The Lilith computer is designed to fit beside or underneath a
+table on which the 15*~display, the keyboard, and the mouse are
+Placed. The cabinet has a height of 274 cm; it is 43 cm wide and
+55 cm deep. The disk cartridge is acceasible from the front.
+
+The electronic components are placed on 18 boards housed in «2
+cack with dimensions 42*35*3@ cm. One board each contains the
+aicrocontrol unit, the arithmetic-logic unit, the processor part
+and interfaces ta keyboard, mouse, and serial data line, the
+instruction fetch unit, the display interface and the disk
+interface. Four boards contain the main memory. Another board
+Slot is reserved for a 24*49 microcode RAM, one for the Monitor,
+and § slots are free for future experiments with other units or
+interfaces. This makes the computer sultable as an object for
+experimentation on the hardware as well as the software level.
+
+The remaining space in the cabinet ia taken by the disk drive
+and the power supply. Conventional linear power supplies were
+built aftec several disappointing experiments with modern
+switching power supplies that offer a much improved efficiency.
+
+They turned out to be unable to cope with the European 228
+Volts.
+
+===== PDF page 33 =====
+
+—~ Jl -
+
+t@. Conclusions
+
+ee eer
+
+The personal computer leads to an entirely new computing
+environment. Due to the high bandwidth of information between
+its usec and his tool, a close interaction is possible that
+cannot be provided by a central, remotely accessed Facility. The
+personal computer [is much more than an “intelligent terminal",
+because It puts the computing power near the user. A
+particularly attractive feature is its constant availability,
+and consequently the owner's independence of a computing
+center’s service hours,
+
+Interactive psage is of particularly high value in the
+development of software, where text editing, compiling, and
+testing are the prime activities. In our experience, a personal
+computer increases the effectiveness of a competent software
+engineer by an order of magnitude. 1! stress the attribute
+“competent", for he needs the wisdom te leave his tool and
+retreat to quiet deliberations when deeper problems of
+algorithmic design appear. For the less competent engineer, the
+personal computer amplifies the danger of seduction to
+programming by trial and error (“hacking"}, a method that is
+unacceptable in professional software engineering.
+
+It has now become a widely accepted view that the software
+engineet's notational tool aust be a high-level programming
+language. When large, complex systems are the objective, the
+tool must support modularization .and the specification of
+interfaces. We have designed the tanguage Modula-2, a more
+modern version of Pascal, with the principal addition of a
+module Structure. Our implementation connects this feature with
+the facility of separate compitation. Separate compilation,
+however, is not independent compilation. On the contrary, the
+compiler must fully check the consistency of the separately
+compiled modules as if they wece written as a single plece of
+text. The separation of global modules into definition and
+implementation parts makes it possible to define those aspects
+of a module that are significant for its clients apart from
+those that are private to its implementation, It reinforces the
+strategy of first breaking down a planned system {nto modules,
+then to define their interfaces with the goal to keep them
+“thin*, and finally to let the members of the programming team
+implement the modules with relative independence.
+
+The exclusive use of a high-level language makes it possible to
+design «a computer architecture without regard of its
+Suitability to assembler coding. The resulting architecture is
+organized around a stack. The instruction set isa. designed to
+provide a high density of code, largely due ta the use of
+variable address length.
+
+It fis particularly attractive to design such an architecture and
+
+
+===== PDF page 34 =====
+
+~ 32-
+
+instruction set, if no conventional computer must be used for
+its intecpretation. We have therefore also undertaken the design
+of a hardware system with the purposes to interpret this code
+etficiently and to accommodate the use of a high-resolution
+display. The latter cequires a high memory bandwidth and bursts
+of fast computation. The implementation of a microcoded
+interpreter and the inclusion of a few special instcuctions for
+bitmap handling appeacs to be an ideal solution. These
+instructions correspond to aicrocoded routines that perform the
+necessary bit-pushing with greatest efficiency.
+
+AS an experiment ‘ta integrate the design of a programming
+language ~- the software engineer's notational tool - the
+development of its compller and environment, the dasign of a
+computer architecture and instruction set, and the construction
+of the hardware - the software engineer's physical tool - the
+project has been successful and exciting. The resulting system
+is, of course, not without its deficiencies. Our consolation is
+that, 1f we did not know of items that should have been dane
+differently, we would not have learned through our research.
+Also, the project had to be conducted with severe restrictions
+on manpower. This had the benefit that no significant management
+problems were encountered.
+
+As far as the hardware is concerned, an additional constraint
+was the limited availability of modern technology. It was
+therefore decided to rely on commercially available TTL chips
+only, apact from MOS technology for the memory. The integrated,
+top-down design from software to hardware outlined by this
+project, isa especially relevant in view of the future role of
+VLSI technology. Its unlimited possibilities cequire that = the
+designer obtain new criteria guiding his objectives. The top-
+down approach crossing the sof€t/hardware boundary tells the
+hardware designer what is needed rather than the hardware
+customer what is available. An aspect of this project that we
+were unable to tackle was the design of LSI chips representing
+the essential units of the Lilith computer, incorporating the
+unconventional aspects af its architecture. The chip count (as
+well as power supply problems) could thereby have been reduced
+quite drastically. We hope that someone better equipped for the
+task will pursue this challenge.
+
+acknowledgements
+
+Se ee er er
+
+I welcome the opportunity to thank a1] those who contributed to
+the success of this project, in particular those who suffered
+through setbacks and lost neither the sight of its goal nor the
+conviction of its worth. My thanks are due to the team members
+L.Geissmann, A.Gorrengourt, J.Hoppe, Ch.Jacobi, §$.E. Knudsen,
+T.Noack, Ch.Richner, and W.Winiger at ETH Zucich, and L.Binghas,
+J.Wielson, and F.Ostler at BYU, Provo. I am particularly
+
+===== PDF page 35 =====
+
+- 3} »
+
+indebted to R. COhran for his untiring enthusiasm and for not
+giving up even in moments of despair. The idea that such a
+project would be both worthwhile and feasible originated during
+my sabbatical leave at the Xerox Palo Alte Research Center in
+1976/77, and I am most grateful to Its staff members for many
+inspiring ideas. 1 thank Ch.Geschke, 8.W,Lampson, J.Morris, and
+E.Satterthwaite for convincing me that complex software was not
+only needed but possible on small personal computers, and
+B.M.McCreight for sticking te his belie£ that it was possible to
+teach hardware design to a software type and for withholding his
+plentyful knowledge of all the difficulties to be encountered.
+Furthermore [I am grateful to J.D.Nicoud of ETH Lausanne for his
+help in the design and for producing the Mouse. Finally £ wish
+to acknowledge the financial support of ETH, making the entire
+endeavour possible.
+
+References
+
+1. C.P. Thacker, E.M.McCreight, B.W. Lampson, R.F.Sproull,
+D.R.Boggs. Alto: A personal computer. Xerex Palo Alto
+Research Center. Report CSL-79-1T (1979) “
+
+2. N.Wirth., <A personal computer designed for a high-level
+language. In “Microcomputing’, W.Remmelte, H.Schecher, Eds.,
+115-134, Stuttgart, 1979.
+
+3. N.Wirth,. Modula-2. Institut fur Informatik, ETH. Report 36,
+1988,
+
+4. &.W.Lampson. An open operating system for a single-user
+machine. Revue Francaise d‘Automatique. pp 5-38, Sept. 1975.
+
+5. N.Wieth. Modula: A language for modular aultiprogramming,
+Software - Practice and Experience, 7, 3-35. Jan.1977.
+
+6. Ch.@,.Geschke, J.N.Morris, E.H.Satterthwaite. Early experience
+with Mesa, Comm. ACM, 28, 8, 548~553, Aug. 1977.
+
+7. L.Geissmann. Modulkonzept und separate Compilation in der
+Programmiersprache Modula-2. In “Microcomputing", 98-114,
+{see Ref,2)
+
+8. H.C,Lauver, E.H.Satterthwaite. The impact of Mesa on system
+design. Proc. Int'l Conf. on Software Engineering, Munich,
+174-182, TEEE (1979).
+
+8. D.D.Redell et al. Bllot: An operating system for a personal
+computer. Comm.ACM 23, 2, 31-92 (Feb. 1989)
+
+===== PDF page 36 =====
+
+- 34 -
+
+pee
+
+MLkts schonashs ccc} anit
+
+‘Mesles Zeetat®, tae cme
+
+ublerache firme Oe
+
+_ abe bt ave Aadang des Weg
+
+jon? Diabe.°* wat Mans
+
+ye veclebres. Ben Carce
+
+Bet auth the wabett base feat Veretect ¥
+met sre te marr wat
+r +
+
+ear waa O<blogrmph.s*° eo; (atin
+” , — oht Thal, ne
+
+tut: annnt [
+
+| Untredectias
+2, Praject Aielory and ever etme
+
+Db. Manwlee end interfaces in Aoduled
+. Seperate conptiatien af aodvles
+B. The architecture of whe LITA ca
+. The Utltth Nerdare aiructore
+
+a: sities mG.8 Indus,
+EaPOAT Quake Je FED
+Resaint, wiselat, Or iteterd,
+
+wWetiedet, wetienee, Witedir tng;
+
+PRECERURE Aged tnt{ WAR Pe areata,
+*F hi
+
+wel tat Fae RGR
+
+| bin Pore
+aw coe = s
+
+Berra Srtige
+
+Fig. 1 Examples of displayed pictures in original
+acrcen resolution.
+
+===== PDF page 37 =====
+
+- 35 -
+
+TAA TRA
+
+codeisveto
+“Progam”
+
+Loader invokes at Start of program at Termination of and
+fevel t level 2 return Irom level 2
+
+caL
+
+FAA
+
+Fig.2. Loading of program al level 2
+
+===== PDF page 38 =====
+
+- %-
+
+space
+
+SEK, senident modetes (sevet 0}
+
+Fig.3. Typical sequence of program loadings
+
+Tamie at
+Black odds06sen
+
+NameDirectory FileDuectory File Blocks
+
+Fig.4. Storage layout on disk
+
+===== PDF page 39 =====
+
+- 37 -
+
+Weangies vectors
+
+Fig. 5. The three processes of Mcedos
+
+Fig. 6. Procedure call hierarchy
+
+===== PDF page 40 =====
+
+Reyisters: u
+G
+$s
+H
+F
+PC
+P
+M
+
+Frame Ads Table
+
+~ 8 -
+
+poinies lo local data segment
+poster to plobal dala segment
+pointer to top of slack
+
+pointer to stack limit
+
+pointer lo current Code rama
+pointer lo current instruction
+power lo current process
+interrupt mask
+
+Fig. 7. The Lilith archiectue
+
+===== PDF page 41 =====
+
+m BQ ow
+
+immediate n
+global Gen
+indirect Sena
+
+Fig. 8. Lilith instruction formats
+
+===== PDF page 42 =====
+
+om £0 —
+
+a ,
+id
+__d 18
+ALU: Disp Mouse
+Cut UART
+16
+0
+aK x 40 |_|
+ROM 12
+
+Fi4. 9. Lilith hardware siructure
+
+===== PDF page 43 =====
+
++ 3 3 3.62 4 4 2 4 1 3 tay, 8
+
+1 3 3 3 2 4 4 2 4 1 3 74 4 4
+1 12 8 § | 3 10
+
+Osi, Fet, AS, A, B: 2901 cantral lields
+
+PC: 2911 control field
+
+SM, SC: Shilt mode and count
+
+s: Stack enable
+
+Fig. 10. The micro-instruction formats
+
+===== PDF page 44 =====
+
+= 42 -
+
+i2
+256 x12
+iS a
+MAP
+ROM
+ct
+
+s Mask
+Reg
+
+|) decade
+| and BUS
+| fea | ax
+Reg
+tk
+
+eee
+
+ee ene ae
+
+4x12
+BAM
+
+(stack}
+
+Fig. 11. The Micra-Control Und
+
+===== PDF page 45 =====
+
+~ ade
+
+16x16 p MUX
+
+RAM
+
+_ 18x16 FO
+RAM
+(stack)
+ALU
+Barret
+DST « AL
+
+trom mc
+
+gate
+
+DST«$¢
+
+SAC a AL
+BUS (16)
+
+Fig. 12. The Arithmetic Logic Unit
+
+===== PDF page 46 =====
+
+~ 44 -
+
+Fausias F4t S202
+
+Fig. 13
+The expression alack circuit
+
+Gata Qut
+
+===== PDF page 47 =====
+
+
+===== PDF page 48 =====
+
+FATE REQ
+
+cin
+
+3ST 1 MAR
+
+fy Gus
+
+SATE DATA
+(
+
+ad
+30
+
+ATA STROME
+
+Re smd
+
+-~ a6 -
+
+Fig. 15. The bus to memory interlace and request arbisation circuit
+
+cru net
+
+Meh ADA
+
+MEM PATA
+
+===== PDF page 49 =====
+
+~ 47 «
+
+OTHER REQ |
+
+CP REO
+
+CPURDY
+
+CPU SES
+
+CLR
+
+Fig. 16. Memory interlace signal timing
+
+Ccrusus (16)
+
+Fig. 17. The instruction letch unit
+
+MEMADA MEM OATA
+
+64
+
+INSTN BUFFER
+
+===== PDF page 50 =====
+
+- (8 -
+
+ing
+™
+2
+
+-
+“
+a
+
+2
+»
+z 2
+
+con
+
+x
+2
+
+ot
+
+10
+
+Fig. 18. The Mouse interface with «-countes
+
+*
+
+===== PDF page 51 =====
+
+- 49 -
+
+MonAdirBus (16)
+
+Mea02 K x8
+ROM Terminal
+Ef MonDataBus 8
+
+MIR uPC Bus Cantrol
+
+Fig. 19. Monitor with 6802 microprocessor
+
+===== PDF page 52 =====
+
+rare
+
+ter
+
+- §3 ~
+
+Appendix 1
+
+—— eee ee
+
+The M-code interpreter
+
+Aa A ld He SY mle le SE lr AE i Ns
+
+The following Madula-2 program interprets M-code Instructions
+and serves as a high-level definition of the Lilith computec's
+instruction set and architecture. A few comments are necessary
+to cover details that are not fully described by the program.
+
+1. The array variables stk and code stand for the data and
+Program stores respectively. We assume that on an actual
+computer they represent the SAME physical memory. The array
+indices then denote memory addresses. Access to the code
+involves the use of the base address F {and an 18-bit wide
+addition}. -
+
+2. Aki checks against arithmetic overflow, storage overflow, and
+access with value NIL are omitted from the program in the
+interest of clarity and in order not to obscure the essentials
+of the interpretation algoritha.
+
+3. Certain instructions are explained in loase English instead
+of pracise Modula statements. Among them are the bitmap handling
+instructions, which actually constitute fairly complex
+aligorithas, and also operations like shifts, packing, and
+unpacking, which ace considered as primitives, and hence not to
+be defined contortiously in terms of even lower primitives.
+
+4. The Functions low{d}), high({d}, and pairc(a,b) are introduced
+to denote selection of a part of a double word and construction
+of a double word. The functions Dtcunc and Dfloat dencte
+conversion of floating-point values into double word integers
+and vice-versa. All these functions sare NOT available in Modul a~-
+2. Also, sets af the form {m..n} are used, although proper
+Modula-2 does not allow expressions to be used within set
+COnStructors.
+
+5. The detalled specification cf 1/0 instructions ia suppressed.
+It is considered not to be part of the genesal s-code
+definition, but should be allowed to vary among differant
+implementations according to the available hardware. This is
+particularly true for the instructions DSKR, DSKW, SETAK used
+for accessing the disk.
+
+6. The Interrupt mechaniss is described in a cathec loose manner
+and requires additional explanation: At the start of each
+interpretation cycle, the Boolean variable REQ determines
+whether or not an Interrupt cequest should be honoured. REQ
+means “at least one of the unmasked intercupt lines {numbered
+8...15) is low*. «If we denote the request lines by the set
+variable ReqlLines and the presence-of a request on line 1 by
+
+===== PDF page 53 =====
+
+~ SI -
+
+"NOT (1 IN RegLines)", then REQ can be expressed as
+REQ = (Reqtines + Mask § {8 .. 15}}
+
+The value Mask is the union of the mask register M and a
+varlable called DevMask {Mask * M + DeviMask). This global
+variable allows a program (typically the operating system} to
+shut out any (or all) devices from interrupting. In the Lilith
+computer, DevMask ils allocated in main memory at location 3. The
+value ReqNo determines the interrupt line whese request is being
+accepted. It determines the transfer vector used by the TRANSFER
+operation. The value RegNo is defined as the maximum | such that
+"NOT (i IN Reqlines + Mask).
+
+Table of instructions
+
+ haetnatiee hen taetee teeedealeentunluadianmeudiesdamdeeluadeataamany
+
+a 4B ae 148 208 246 389 348
+8 Lia Liw Low Lowe LSW READ FOR1 MOV
+i LI} LLD LGD iLswl LSD WRITE FOR2 . CMP
+2 LI2 LEW LGW2 LSW2 LSbs DSKR ENTC ooT
+3 £13 LED LGW LSw3 LXFEW DS KW EXC | REPL
+4 L114 LLW4 LGW4 Low4 LSTA SETRK TRAP. SBLT
+5 Lis LEW5 LGWS5 Lows LxB UCHK CHK BCH
+6 LI6é LEW§ LGW6 Lsw6 Lxw CHKZ UNPK
+7 Li? LUW? LGW? Lsw? Lxb Sys CHKS PACK
+i8 Lis LEwa LGW8 Lswa DADD ENTP EQL GB
+HW urs LLW9 Lows LSw3 DSUB EXP NEQ . Gal
+12 Lite LEW LGwla Lswid DMUL ULSS LSs ALOC
+13 Litt LEwit LGW1] LSwt} POIV ULEO LEQ ENTR
+14 LIt2 LLwi2 LGwl2 Lswte2 UGTR GTR RIN
+5 LIt3 LLW13 LGwl3 tswt3 UGEQ GEQ cx
+16 Lil LLWi4 LGWi4 LSwi4 DSRE TRA. ABS cI
+V7 LPs LUWIS LGWI5 LSwWi5 DSHR RDS NEG cr
+298 LIB SLW ScWw SSwa@ ssw LODFW oR CL
+2) SLD SGD Sswt 88D LODFD XOR Cul
+a2 Liw SEW SGW2 SSW2 SSbe STORE AND Ch2
+23 Lio SED SGwW SSw3 SXFW STOFV COM CL
+24 LLA SLw4 SGW4 ssw TS STOT IN CL4
+25 LGA SLWS SGw5 SSW5 SXB copt LIN CL5
+26 LSA SLW6 SGW6 SSW6 SxXW DECS MSK CL6
+27 LEA SLWY SGW? SSW? SX PCOP NoT CL?
+30 JPC Siwa SGwa Sswe8 FADD UADD ADD CLs
+31 JP. Stwo SGW9 Ssw9 PSUs USUB Sus CLO
+32 JPFC Stwig SGwis SSwig FAUL UMUL MUL CLI
+33. JPF SLW1] SGwl} Sswit FDIV UDIV Div cuig
+34 JPBC SLWI2 SGW12 SSH12 FCMP UMOD CLI2
+35 JfB SLW13 SGW1} SSWI3 FAGS ROR Bit CLi3
+
+===== PDF page 54 =====
+
+36 ORIJP
+
+SiLwig SGwl4
+
+37 ANBJP Siwis SGWI5
+
+Reserved
+
+AW @ wh ow &
+
+16,17
+28,21
+22,23
+
+nae
+
+36,37
+
+{init
+
+locations:
+
+(vo register of module 8)
+alization flag of module 8)
+{string painter of module @}
+device magk
+P-register
+
+saved P-register
+boot flag
+
+trap vector
+intercupt vector
+interrupt vector
+
+interrupt vector
+
+4%..177 data Frame table
+
+MODULE Interpreter;
+
+CONST tlc = 168;
+aft = 408;
+VAR (*global state variables*)
+nae PC: CARDINAL;
+IR: CAADINAL;
+F: CARDINAL;
+G: CARDINAL;
+H: CARDINAL;
+Li CARDINAL;
+S: CARDINAL;
+P: CARDINAL;
+M: BITSET;
+REQ: BOOLEAN;
+
+ReqNo: CARDINAL;
+
+PEG SHL NOP cLl4
+FFCT SHR MOVE CLS
+
+for Line 8 (clock)
+for llne 9 (disk}
+
+for line 15
+
+(*N.Wicth, Ch.Jacobi; Feb.al*)
+
+i*trap location adr*}
+({*data frame table adr*)
+
+i*program counter*)
+(*instruction register*)
+{*code frame base address*}
+(*data frame base address*)
+d*stack Limit address*}
+(*local segment address*}
+(*stack poincar*)
+
+(*procese base addresa*)
+(*process interrupt mask*)
+(*interrupt request*)
+(*request oumber, &..15*)
+
+{*auxiliary variabies used over single instructions only*)
+1, }, kz CARDINAL;
+$z, adr, low, hi: CARDINAL; (*used in FOR, ENTP, PCOP*)
+sb, db, sbmd, dbmd, fo: CARDINAL; (*display handling*)
+x, ys REAL; .
+
+stk: ARRAY (#..1777776] OF CARDINAL, (*data store*)
+
+MODULE InstructionFetch;
+IMPORT &,PC;
+EXPORT next, next2;
+
+VAR code: ARAAY [@..777778] OF {@..255);
+
+===== PDF page 55 =====
+
+- §3 -
+
+PROCEDURE next): CARDINAL;
+BEGIN
+
+INC (PC); RETURN code[4*F#Pc-1])
+END next;
+
+PROCEDURE next2()}: CARDINAL; (*get next two code bytes*}
+
+BEGIN .
+
+INC {PC, 2); RETURN code[4*F+pc-2]*489B + code[4*F+Pc-1]
+END next2;
+
+END InstructionFetch;
+
+MODULE ExpressionStack; .
+EXPORT push, pop, Dpush, Dpop, empty;
+
+VAR sp: CARDINAL;
+a: ARRAY [(8..15} OF CARDINAL; {*expressian stack*}
+
+PROCEDURE push{x: CARDINAL);
+BEGIN afsp] :* x; INC{sp)
+END push;
+
+PROCEDURE pop(}: CARDINAL;
+BEGIN DEC(sp); RETURN(a[sp}}
+END pop;
+
+PROCEDURE Dpush(d: REAL); .
+BEGIN afsp} := high{d); INC(sp}; afsp} := low{d); INC(sp)
+END Dpush;
+
+PROCEDURE Dpopi(): REAL;
+BEGIN DEC{sp,2); RETURN pair(a[sp], a{sp+1]})
+END Dpop;
+
+PROCEDURE empty{} : BOOLEAN;
+BEGIN RETURN sp = @
+END empty;
+
+BEGIN sp := @;
+END ExpressionStack;
+
+PAOCEDURE mark({x: CARDINAL; external: BOOLEAN);
+VAR i: CARDINAL;
+BEGEN i := 8;
+stk(S] := x; INC{S}); (*static Link*)
+stk([S} := &; INC(S};  (*dynamic link*)
+IF external THEN
+stk(S) s:=* PC+190800B ELSE stk({S} := PC
+END ;
+INC(S,2); Lo:= 1
+END mark;
+
+PROCEDURE saveEx pStack;
+
+===== PDF page 56 =====
+
+- 54 -
+
+VAR c: CAADINAL;
+BEGIN c :* @; (*expression stack counter*}
+WHILE NOT empty() DO
+stk{S] <= pop(); INCES); INC(c);
+END 3
+atk{S) := c; INC{S)
+END saveExpStack,;
+
+PROCEDURE rcestoreExpStack;
+VAR c: CARDINAL;
+BEGIN DEC(S); c :* stk{S};
+WHILE co’ BO
+DEC(c); DEC(S}; pushistk(s])
+END
+END restoreExpStack;
+
+PROCEDURE saveRegs;
+BEGIN saveExpStack;
+Stk[P jo s= G; stk(Pel] :=-L;
+$tk(P+2] :* PC; stk{P+3] := CARDINAL(M);
+etk{P¢4) :* 6; stk[p+S] := H+24;
+(* stk{e+6} is reserved for error code *}
+(* sckf{Pp¢?] is veserved for error trap mask *)
+END saveRegs;
+
+PROCEDURE restoreRegs(changeMask: BOOLEAN);
+BEGIN
+G r= sck({Pj; F ss stk(G};
+& s* stk(Ptt]; PC s= stk{P+2};
+If changeMask THEN M :* BITSET(stk(P+3})) END ;
+S s= sck{P+4]; s™ stk(P+5)~-24;
+restoreExpStack
+END restoreRegs;
+
+PROCEDURE Transfer (changeMask: BOOLEAN; ta, from: CARDINAL);
+VAR 4: CARDINAL;
+
+BEGIN
+j i= stk(to}]; saveRegs; stk{from) ;= P;
+Poss j; cestoreRegs (changeMask)
+
+END Transfer;
+
+PROCEDURE Trap(n: CARDINAL);
+BEGIN
+TF MOT (n IN BETSET(stk[®+7})) THEN
+Stk{P+6) s*= n;
+Transfer (TRUE, Lic, tle+1)
+END
+END Trap;
+
+BEGIN (* readBootPile *}
+Po :* stk(4); cestoreRegs (TRUE);
+Loop
+
+IF REQ THEN Transfer (TRUE, 2*Reqno, **ReqNo+l) END ;
+
+===== PDF page 57 =====
+
+- §5 -
+IR := next);
+CASE IR OF
+OB .. V7B: (*LI# - LI15 load immediate*) push{IR MOD 16) |
+285: (*LIB load immediate byte*}) push{next()) |
+228: (*LIW load immediate word*) push(next2{)) |
+238: (*®LED load immediate double word*}
+push(next2()); push(next2¢))} |
+248: (*LLA toad local address*} push{L+next{)} |
+258: {*LGA load global address*}) push(G+next{)} }
+268: (*LSA load stack address*} pushi(popi)tnext()) |
+27B: (*LEA load external address*}
+push(stkdft+next(}}+next{)}) {
+30B: (*JPC jump conditional*)
+IF pop() = @ THEN PC ¢= PC + next2(}
+ELSE INC{(PC,2)
+END |
+318: (*3P jump*) PC := PC + next2{) |
+32B: {*J3PFC jump forward conditional*)
+IF pop() = @ THEN PC := PC + next{) ELSE INC(PC) END }
+338: (*JPF jump forward*) PC := PC + next{}) = |
+34B: (*JPBC jump backward conditionalt}
+IF pop(} = @ THEN PC := PC - next(} ELSE INC{®PC}) END
+358: (*3PB jump backward*} PC := PC - next{} |
+368: (*ORJP short circuit OR *)
+IF popi}) = & THEN INC(PC)
+ELSE push(t); PC :* PCtnext()}
+END |
+378: {*ANDIP short circuit AND *)
+I? popt} = @ THEN push(#}); PC := PC+next(}
+ELSE INC {PC}
+END |
+488; (*LLW load local word*) push({stk[L+next(})])) = |
+41¥B: (*LLD load lecal double word*)
+i := Ltnexti); push(stk{i}}; push(stkf{i+1}) |
+42B: (*LEW load external word*}
+
+===== PDF page 58 =====
+
+- 56 ~
+
+push(stk[stk{dfittnext(}Jenext()i) |
+438: (*LED load external double word *)
+
+f s= stk(d€ttnext())tnext();
+
+push(sck(i}); push(sck(i+t}) f
+448 .. S7R: (*LEW4-LLWI15*) push{(atk({L + (IR MOD 16)1} |
+64B;: (*StW store jJocal word*} stk(Linexei))] := popi) |
+
+61B: ¢€*SLD store local double word*)
+Loss Lenext(); stk{ish]-:= pop); stk{i}] s= pop) |
+
+62B: ("SEW store external word*)
+atk[stk[dftineat())tnext()} s= pop{) |
+
+638: (*SED store external double word *)
+io s= sck{d€t+enext{j]tnext();
+stk(i+t) := pop(); stk[ i] := pop() |
+
+648 .. F7B; {*SL~LW4-SLW15) store local word*)
+SCk[L#€1R MOD 16)§ := popt)
+
+1885; (*LGW load global word") push(stk{[G+next()}) !
+
+WIB: (*LGD load global double word*}
+if ss next()4G; push(stk{ij}; push(stkQiel}) |
+
+1928 .. 1178s (*LGW2 ~ LGWI5 load giobal word*)
+push(stk(G + (IR MOD 16}})
+
+¥2@B; (*SGW store global word*) stk[Gtnext{)} <= popi) |
+
+1218: (*SGD store global double word*)
+i s= Gtnext{}; stk{it+i}] := pop(); stkQi) += pept} |
+
+1228 .. 137B: (*SGW2 - SGWI5 store global word*}
+stk{G + {IR MOD 16)]) := pop()
+
+1408 .. 157B: (*LSWa ~- LSWIS load stack addressed word*}
+pushistk(pop()+(IR MOD 16})3) E
+
+1608 .. 1778: (*SSWS - SSWI5S store stack~-addressed word")
+k :* pop(}; i s* pop{})+(iR MOD 16}; stk{i] := k f
+
+2938: (*LSW load stack word*)
+i :* pop({) + next{j); push(sck£i}) |
+
+291B: (*LSD load stack double word*)
+f s* pop() + next(); push(stk{i}}; push(sck[ie¢t}) |
+
+2038; ({*LXFW load indexed frame word*}
+k := pop() + pop()*4; pusn(sck{k}]) |
+
+===== PDF page 59 =====
+
+202B;
+
+2948:
+
+2058:
+
+2868;
+
+2078:
+
+2188:
+
+201B:
+
+212B:
+
+2138:
+
+2168:
+
+207B:
+
+2208:
+
+2218:
+
+2228:
+
+223B:
+
+- $7 -
+
+(*LSO@ load stack double word*)
+
+i s= pop(); push(stk{i}}); push(stk{i+1]}) |
+
+(*LSTA load string address *) push({stk(G+2)#next()}
+
+{*Lx8 load indexed byte*)
+
+i s= popt}; j := popt):; k s= stk[} + (i DIV 2))];
+
+tf i MOD 2 = @ THEN push(k DIV 4688)
+ELSE push(k MOD 46¢B)
+END |
+
+(*LXW load indexed word*}
+i := pop()+pop(}); pushistk[il) 1
+
+{*LxXD load indexed double word *)}
+
+i s= 2*popi}+pop(); push(stk{i]); push(stk{i+1})
+
+(*DADD double add. Subsequent operators for double
+words denote unsigned fixed-point arithmetic,
+although the program shows REAL operands*)
+
+y :* Dpop({); x :* Dpop(); Dpush(xty) |
+
+(*DSUB double subtract*)
+y «* Dpop{); x :* Dpopt); Dpush{x-y) |
+
+(*OMUL double amultiply*)
+
+jo:* pop(); f := popt); (* x :=* i*j *) Dpush(x) 1
+
+{*DDIV double divide*)
+3} := pop{); « := Dpop();
+
+P
+{* k := x Div rT i z:=~ x MOD j *) push{ip; push{k)*
+
+(*pSsul double shift left*)
+
+x :™ Dpop(); (*shift x left 1 bit*) Dpush{x) 1
+
+{*DSHR double shift right*)
+
+x := Dpop(}; (*shift x right 1 bit*) Dpush{x)} |
+
+(*SSW store stack word*)
+
+k r= popt}); i := pop()t+next(); stkfi] s= k |
+
+(*S5SD stoce stack double word*}
+
+k := pop(}; } := pop{); if " pop(j+next();
+
+stkGi] c= jy stk itt] := k
+
+(*SSD@ store stack double word*}
+
+ko sm pop(); jo := pop(); i == popt);
+atkEi] ss j, stklitt) = k 1
+
+(*SXFW store indexed frame word*)
+1 i= pop{); k s= pop() + pop()*4; stkik}
+
+===== PDF page 60 =====
+
+22465:
+
+225B:
+
+226B:
+
+2278:
+
+2388:
+
+23TB:
+
+2328;
+
+2338;
+
+2348;
+
+2358:
+236B:
+2378:
+
+2488;
+
+2418:
+
+- 58 -
+
+{*TS test and sat*)
+i :* pep(); push(sck(i}; etki] 29 1 }
+
+(*SeB store indxed byte*)
+k i= pop()s; i t= pop(}; j := popi) + (1 DIV 2);
+IF i MOD 2 = @ THEN |
+
+ack(j] := k*466B ¢ (stk{4) MOD 48@B)
+ELSE etki jl t= (atk(jj) DIv 4998) * agen + k
+END
+
+{*SxW store indexed word*)
+k s* pop{); i t= popti+popt(); stkfi} se k |
+
+(*SXD store indexed double word*)
+
+ko s= pop(); j := popt{); 4 := 2*pop{)+pop();
+Stk€hi}] s= jy wtkQ lel] «= k }
+
+(*PADD ficating add*)
+y += Dpop(); x t= Dpopi}); Dpush(xty) |
+
+{*FSUB floating subtract*)
+y == Dpop(); x t= Dpopt{); Dpushix-y) |
+
+(*FMUL floating multiply*)
+y :* Dpop(); x t= Dpop{); Dpush(xty) |
+
+{*FDIV Floating divide*)
+y == Dpop(); a := Dpop{); Dpush{x/y) |
+
+(*FCMP Floating compare*)
+
+x := Dpop()s y-:= Dpop();
+
+If x > y THEN push(®); push(1}
+ELSIF x < y THEN push{1}3; push(6}
+puse push(§); push(#)
+
+END
+
+(*FABS floating absolute value*) Dpush(ABS(Dpop(})} 1
+(*PNEG floating negative*} Dpush(-Dpopt()) |
+
+(*FFCT floating functions*}) £ s= nexti);
+IP i=@ THEN Dpush (FLOAT I pop{())}
+ELSIF i=} THEN Dpush{DPloat(Dpop{)))
+ELSIF 1=2 THEN push(TRUNC (Dpop{})}
+arid i=} THEN Dpush(Dtrunc{Dpop{}, popt)))
+
+(*READ*) 4 s= pop(); k :© popt{);
+d* stk({i] := input from channel k *} |
+
+k t= popt)
+
+(*WRITE*®} & 3= pop(); ;
+ut i to channel k *) }
+
+(* outp
+
+===== PDF page 61 =====
+
+24281
+2438:
+2448:
+2458:
+
+2478:
+
+2588:
+
+2518;
+2528;
+
+253B:
+
+2548:
+
+2558:
+
+2568:
+
+257B:
+
+26BB:
+
+2616:
+
+2628:
+
+26368:
+
+2646:
+
+2658:
+
+(*BSKR disk read*) |
+(*DEKW diak weitet) |
+
+t*SETRK set disk track*) |
+
+(*UCHK*) k := pop(); j s= pop(); i := pop(); push(il;
+IF (i < j) OR ({ > k) THEN Trapi4) END |
+
+(*SYS rarely used system functions*) |
+
+(*ENTP entry priority*}
+stk{L+3]}] := CARDINAL(M); M t= [@..next{)-t} |
+
+(*EXP exit priority*) M := BITSET(Stk{L+3]) |
+
+(*ULSS*} j := pop(); i := pop{);
+If i < } THEN push(}) ELSE push(@) END 1}
+
+(*ULEQ*) J := pop(); £ := pop{);
+IP i <= 4 THEN push(1) ELSE push(@) END |
+
+(*UGTR*) 9 := popt); i := popt);
+IF i > j THEN push{1) ELSE push(@} END }
+
+(*UGEQ*) 4 := popt); f := popt);
+If 1 >= j THEN push(1) ELSE push(@) END } —
+
+{*TRA coroutine transfer*)
+Transfer (BOOLEAN{next(}),. popl}, popt)) |
+
+{*RDS rcead string*) k = pop{}; £ :* next(};
+REPEAT
+
+stk[k] :* next2()3 INC (k)}); DEC(1)
+UNTIL if < 8 |
+
+{*LODEFW reload stack after function rceturn*)
+i s= popt{}); restoreExpStack; push{i) |
+
+(*LODFD reload stack after function return*)
+i := pop(); j := pop(); restoreExpStack;
+push{j); push(i) |
+
+(*STORE*) saveExpStack |
+
+(*STOFV store stack with Formal procedure on top*)
+i :* pop{}; saveExpStack; stk{S} := 1; INC{S) |
+
+{*sToT copy From stack to procedure stack*)
+stk{S} := pop(}); INC({S) |
+
+¢*COPT copy element on top of expression stack*}
+i s= pop(); push(i}; push{!i) |
+
+===== PDF page 62 =====
+
+2668:
+2678;
+
+2708:
+271B:
+2728;
+2738:
+274B;
+2758;
+
+2768:
+
+277B:;
+
+3208:
+
+301B:
+
+3928;
+
+- 68 -
+
+(*DECS decrement stackpointer*®*) DEC(S} j
+
+{*PCOP allocation and copy of value parameter *)
+StkiLenext(}] := $;
+SZ := pop(}; k 3: Stszz; adr := pop{};
+WHILE sz>@ bBo
+
+stk{S} := stkfadr}; INC({S); INC(adr); DEC(sz}
+END |
+
+(*UADD*) j :* popi); i z= pop(); push(i+j) |
+(*uSuB*) 3 s= popi}; i 2= pop); push{i-4}) |
+(*UMUL*) j z= pop(); i s= popi); push(i*}) |
+(*UDIVe) j := pop(}; 1 == popt(); pushit DIV 4) |}
+(*UMOD*) 4} := popid); i := pop(); push({i MOD j) |
+
+(*ROR*) j = pop(); i z= pop{) MOD 16;
+(*k se j rightrotated by i places *) push(k) ]
+
+(*SHL*) dos { := pop{) mop
+(* ko sw 4 le€e Pal teed by 1 places *) een ik) j
+
+(*SHR*) Jj s= pop(d; i :* popt) MOD 16;
+(ik s= j right Penieted by i places*) pushi(k) |
+
+(*FORI enter FOR statement *}
+i s= mext(); (* =@: up; >@: down *)
+hi z= popt); low z= popi); adc := popl)s
+k ¢* PC + next20i
+T? (({i = @) AND tlow <= hi)} Of
+(th @ £4) AND (low >= hi})} THEN
+
+Stkfadr] := low;
+
+stk(S} :* adey; INC{S); atk{S} s= hi; INC{S)
+ELSE (* don’t execute the FOR loop *)
+
+(*POR2 exit FOR statement *)
+hi := stk(S-1}; adc :* stk{S-2];
+SZ t= INTEGER{mextid); (* step cange -128..4927 *}
+k z= PC + mext2(); f := stklade]+s2z;
+IF ((s2 >= 6) AND (i > hid)
+OR ((sz2 <= @) AND (i < td))
+THEN (* terminate *} DEC(S, 2)
+ELSE (* continue *}) stkladr] :* i; PC := k
+END }
+
+(*ENTC enter CASE statement*}
+PC z= PC + mext2(); k := pop();
+
+===== PDF page 63 =====
+
+3838:
+
+384B:
+
+3858:
+
+366B:
+
+3078:
+
+31 8B:
+
+3UtB:
+
+3126:
+
+3136:
+
+31 4B:
+
+3V5B:
+
+3168:
+3178:
+
+~ 6] =
+
+low := newt2(); hi y= next2();
+stk{S} :* PC + 2*{hi-low) + 4; INC{S);
+IF (k >= low) AND (k <= hi} THEN
+PC := PC + 2% (k-lowtt)
+END;
+PC := PC # next2() |
+
+(*EXC exit CASE statement®) DEC(S); PC := stk[{S} |
+(*TRAP*) & z= pop{); Trap(i) 1
+
+(*CHK*) k := pop(); j := pop(); i := pop{}); push(i);
+IF (INTEGER(3) < INTEGER(})) OR
+({INTEGER(i) > INTEGER(k)}) THEN Trap{4} END 1
+
+{* CHKZ*)}
+k i= pop(); i := pop{); push({i);
+IF i>k THEN Trap(4} END [
+
+(*CRKS check sign bit*}
+k := pop(}); push(k);
+IF INTEGER{k) < ® THEN Trap(4). END |
+
+(*EQL*)) 5 :=* pop(); i := popl};
+IF i = j THEN push(1) ELSE push(@} END f{
+
+(*NEQ*) j :* pop(); i r= pop{);
+If i § j THEN push(1) ELSE push{a} END |
+
+(*L£SS*} j := pop{); 1 := pap);
+
+IF INTEGER(1) < INTEGER(}) THEN
+push(1} ELSE push(@)
+
+END |
+
+(*LEQ*) 3 := pljz i :* pop():
+
+YF INTEGER(!) mee INTEGER{3} THEN.
+push(1} ELSE push(#}
+
+END {i
+
+(*GTR*) j :* pop(}); 1 := popt};
+
+IF INTEGER(i) > INTEGER{}j) THEN
+push(l) ELSE push{@)
+
+END |
+
+(*GEQ*) j := popt); i := popt);
+
+IF INTEGER{1i} >= INTEGER (5) THEN
+push(1} ELSE push{é@}
+
+END |}
+
+(*ABS*) =«push{ABS (INTEGER {pop()}}) 1
+
+(*NEG*) push{-INTEGER(pop())) |
+
+===== PDF page 64 =====
+
+3208:
+
+3218;
+
+3228;
+
+- 3238:
+
+3248;
+
+3258:
+
+326B:
+3278:
+
+3308;
+3318;
+3328;
+3336:
+334B:
+
+3358:
+3366:
+3378:
+
+3408;
+
+(*OR*)
+
+(*XOR*)
+
+{*AND*)
+
+(*COM*)
+€*IN*).
+
+- £2 -
+
+j i= pop(); i s= popt):
+push (CARDINAL (BITSET(1} #BITSET (4) )} i
+
+jo :* pop{); i += popt};
+push (CARDINAL (BITSET (1) /BITSET(})}) |
+
+J := pop(}; £ z= popid:
+push (CARDINAL (BITSET (i) *BITSET(4))) |
+
+push (CARDINAL((8..15}/BITSET(pop()}})}) |
+
+j= pop(); i := popt);
+
+IF i > 15 THEN push(¢)
+ELSIF i IN BITSET(}} THEN push{}}
+ELSE push(¢)
+
+END |
+
+(*LIN load immediate NIL*} push(1777778) j
+
+(*MSK*)}
+(*NOT*)
+
+(*ADD*)
+
+{*SUB*)
+
+{*MUL*)
+
+(*DIV*)
+
+(*mOD*)
+
+(*BIT*)
+
+(*HOP*)
+
+j += pop() MOD 16; push(CARDINAL({@..k-2})) 1
+4 t= pop(); push{CARDINAL(({15}/{(j})) |
+
+J := pop(); i i= popih;
+push(CARDINAL( INTEGER (1) + IMTEGER(3))) I
+
+J i= popt)s t z= popt)
+push (CARDINAL (INTEGER (1) + INTEGER($))) |
+
+j :™ pop(); 1! := popt);
+push (CARDINAL ( INTEGER (1) * INTEGER({)}) |
+
+j i* pop(}; i := pop{);
+push (CARDINAL ( INTEGER (i) Div INTEGER(4))) |
+
+j t= popt); i := popt);
+push (CARDINAL (INTEGER(i} MOD INTEGER (3))3 |
+
+j = popi) MOD 16; i* k s= (fj) *) push(k> |
+
+{(*MOVF move frame *) i := pop();
+j :* popl}+pop()*4; (*18 bits#)
+
+k :* pop{)+pop()*4; (*18 bits*}
+WHILE i>@ DO
+
+stkik]}
+END |
+
+z= stk(j}s INC(k); INC(}); DEC{1)
+
+(*MOV move block*}
+
+k 3* pop(}; Fd i; 2
+WHILE k>@ in! Pol Poet):
+
+stk{i]
+
+= stk{j)s; INCCL); INC(4); DEC{k)
+
+===== PDF page 65 =====
+
+3498:
+
+342B:
+
+3438;
+
+3448:
+
+345B;
+
+3468:
+
+347B:
+
+356B:
+
+351B:
+3528:
+
+- 63 -
+
+END }
+
+(*CMP compare blecks*}
+k s™ pop(); j := popt); i z= popt);
+IF k=9 THEN push(@); push(@)
+ELSE
+WHILE({stk{i} §& stk(j}) AND tk > B) DO
+EINC(i}s INC( 4); DEC(k)
+END;
+pushi(stk({ ij}; push{stk[4))
+END |
+
+(*DOT display dot*)
+
+k := pop(); j :* popt); dbmd := pop(); i := pop{)
+
+(* display point at <j,k> in mode i inside
+bitmap dbmd *) |
+
+(*REPL replicate pattern *)
+
+db := pop(); sb := pop{); dbmd := pop(); i :* pop()
+
+{* replicate pattern sb over block db inside
+bitmap dbmd in mode i *} j
+
+(*BBLT bit biock transfer*}
+sbmd := pop(}; db := pop{): sb <= pop{);
+dbmd := pop({); 1 := popt) sR
+{(* transfer block sb in bitmap sbwd to block db
+inside bitmap dbmd in mode 1! *) Lie
+(*DCH display character*)
+j += pop{); db := pop({); fo :* pop(); dbmd := pop()
+{* copy bit pattern for character j from font fo
+to bleck db inside bitmap dbmad *)} |
+
+(*UNPK unpack*) k := pop(); j t= pop(); f = pop);
+
+(*extract bits i..j from k, then right adjust*)
+
+push{k) | .
+
+(*PACK pack*)
+
+k := pop(); J := pop(); i := pop{); adc := pop();
+
+(*pack the rightmost j-i+) bits of k into positions
+{..J of word stk{adr} *) |
+
+(*GB get base adr n levels down*}
+iss hz Jo := next );
+REPEAT
+{ s= stkfi}; DEC{}}
+UNTIL j=0;
+push(i) 1
+
+(*GB)} get base adr 1 level down*) push{stk{L}) |
+
+(*ALLOC allocate block*)
+{ := pop(); push(S5}; S := S + f;
+
+===== PDF page 66 =====
+
+= 64 -
+
+IF S > # THEN S c= pop(); Trap(3) END |
+
+3538: (*ENTR enter procedura*}
+i ss mnext(); S t= Sei;
+{fF S > 0 THEN S :* 5-1; Trap {3} END |
+
+354B: ({*RTW ceturn from procedure*})
+S$ :* by CL ys stk[S+l]}; i tw stk{St+2]},
+TF i < 1@@9@@8 THEN PC := i
+ELSE G := stk(S]; Fo:= atk{G}; PC := 1 - lsaegan
+END |
+
+3558; (*Cx call external procedure*}
+jo :* mext(); bo: next);
+mark(G, TRUE); G s= stkidfe+});
+Fos* etk(G}; PC s= 29h; PC s= next2ai)  )
+
+3568: (*CI call proceduce at intermediate level*}
+i x= nexti(}); mark(pop{), FALSE);
+PC := 213 PC c= next2() |
+
+3578: (*CF call formal procedure*)
+ios stk[S-l]}; mark{G, TAUE);
+3} z= 1 DIV 4208; G z= atkfdtt+jl;
+cr FF s= stk([G}; PC cw 2°¢1 BOD 4008); PC s= next2{) i
+
+_ 3688: (*CL call local procedure*}
+§ s* next(); mark(L, FALSE);
+PC 3 2e1; PC :=™ nent2() |
+
+3618 .. 3778: (*Chl - CLIS call local procedure*)
+mack(L, FALSE); PC z= 2*{IR MOD 16); 7 next2()
+END
+END (*LOOP*)
+END Interpreter.
+
+===== PDF page 67 =====
+
+- 65 -
+
+Appendix 2
+
+ste le ty te ete ts te in
+
+ee ee ee ee ee eee eee
+
+In order to provide a basis for measuring and comparing the
+efficiency of implementations of the language Modula-2, a
+benchmark program is proposed. It measures selectively various
+specific language features. Instead of relying on a bulit-in
+timing mechanism (which depends on an underlying operating
+system and quite likely impedes the program’s portability), the
+program merely counts the number of times certain statements are
+executed. Computation is monitored and interrupted by the human
+operator equipped with a step watch. Each test is selected by
+typing its identifying character {a - o); the end of the test is
+signalled by typing any character. Further detatls are to be
+derived from the program listing. :
+
+The following Figures have been measured for the Lilith, the
+PDP-11/48, and the Xerox Alto 2 computers. {On the Alto, the
+program was translated into Mesa}. The timing. period is 1
+minute for each test. Implementors of Modula-2 are encouraged to
+apply this test fully or partially to their system and to let us
+know their results.
+
+facility Lilith PDP-11/48 Alto 2
+
+a empty REPEAT locp 321 184
+
+b empty WHILE loop 334 185 116
+c empty FOR loop 422 238 172
+d CARDINAL arithmetic 187 84 54
+@ REAL arithmetic 138
+
+f sin, exp, In, sqrt 87
+
+g array access 103 54 32
+h same with bounds tests 89 11 26
+i matrix access 197 93 44
+3 same with bounds tests 164 ‘21 36
+k cal} of empty procedure 144 37 40
+1 with 4 parameters 94 29 32
+m copying arrays 63 11 56
+mn access via pointers 125 66 54
+a reading a disk stream 267 36
+
+===== PDF page 68 =====
+
+~ 66 -
+
+MODULE Benchmark;
+i*$T-
+a: empty REPEAT loop
+b: empty WHILE loop
+ci empty FOR loop
+a: CARDINAL arithmetic
+@: REAL arithmetic
+f: standard functions
+g: array of single dimension
+h: same as g but with index tests
+i: matcix access
+: Same as i but with index tests
+s call of empty, pacameteriless procedure
+1: call of empty procedure with 4 parameters
+am: copying acrays {block moves)
+ni pointer chaining
+o: reading of File *)
+
+FROM Storage IMPORT ALLOCATE;
+FROM Terminal IMPORT Read, BusyRead, Write, WriteLln;
+FROM InOwt IMPORT WriteCard;
+FROM FileSystem IMPORT
+File, Lookup, ReadWord, Reset, Response;
+FROM MathLibS IMPORT sin, exp, In, sqrt;
+
+TYPE NodePtr = POINTER TO Node;
+Node » RECORD x,y: CARDINAL; next: NodePtr END ;
+
+VAR A,B,C: ARRAY [#..255} OF CARDINAL;
+M: ARRAY [9..99},{8@..99] OF CARDINAL;
+m: CARDINAL; head: NodePcr;
+
+PROCEDURE Test{ch: CHAR);
+VAR 1,3,k: CARDINAL;
+r@, ch, c2: REAL; p: NodePtr;
+
+PROCEDURE P;
+BEGIN
+' END P;
+
+PROCEDURE Q(x,y.Z.wt CARDINAL);
+BEGIN
+END Q;
+
+BEGIN
+CASE ch OF
+“a"°: k s* 28008;
+REPEAT
+k z= k-1l
+UNTIL k = @ ]
+
+*b": i s= 28808;
+WHILE i > @ DO
+
+===== PDF page 69 =====
+
+"oF:
+
+"a" :
+
+bolt tad :
+
+*i*;
+
+"3":
+
+"k's
+
+wats
+
+~ 67 »
+
+fora j-1
+END |
+
+FoR i := 1 TO 268808 DO
+END |
+
+jo:= @; k <= 1a86¢;
+REPEAT -
+
+kore k-by oj os= jet; fo osm (k*3) DIV (4*5)
+UNTIL k = 6 |
+
+k := $608; rl o:* 7.28; r2 ¢= 34.8;
+REPEAT
+
+kot@ keds cB s= (r1*e2) f/f Cetera):
+UNTIL k = 8 | ,
+
+k := 580;
+REPEAT c@ := sin(@.7); rio s* expt(2.a);
+
+rO8o:@ In(18.0); clo s= sqrtqlea.Bp; ko s= k~-
+UNTIL k = @ |
+
+: k = 29088; 1 := 8; B[G}) := 73;
+
+REPEAT .
+A[il := BEI}: BEi} s= ALE]: k se k+1
+UNTIL kK = a | ;
+C*ST+*) ko s= 20006; i s= 8; BIB) s* 737
+REPEAT
+Afi] := Bli}; Bi) := ALi}; k t= k-1
+UNTIL k=#® (*$T-*) f
+
+For i := @ TO 99 DO
+FOR j := @ TO 99 DO
+MEi,3) s= (3,4)
+END
+
+END |
+
+(*$T+*)
+FOR i := @ TO 99 pO
+FOR j := 6 TO 99 DO
+MLi,j] :* MUj,2]
+END
+END {*$T-*) |
+
+k := 29996;
+REPEAT
+
+P; k x= k-1
+UNTIL kK = @ |
+
+ho os* 25888;
+REPEAT
+
+Oai.p.k am); k := k-}
+UNTIL ke = # |
+
+===== PDF page 70 =====
+
+“m™: k := 58;
+REPEAT
+ko osm k-iz Asa By B se Cs; C xs A
+UNTIL k «= # 1
+
+Pn": k zs 58@;
+REPEAT p := head;
+REPEAT P i= p*.next UNTIL p = NIL;
+
+UNTIL k = 8 j
+*o"; k := S08;
+
+REPEAT
+k s:= k-ly ReadWord{f,i)
+UNTIL k = @;
+Reset (f}
+END
+END Test;
+
+VAR ch,chi: CHAR;
+mi CARDINAL;
+f; File;
+q: WodePtr;
+
+BEGIN Lookup(f,"anyFile", FALSE);
+head t= MIL; n c= 1885
+REPEAT q <= head;
+MEW (head); head” .next := gz no s= n-}
+UNTIL n = 6;
+Weite({">"}) Readich};
+WHILE ("a° <# ch) & (ch < "p*} DO
+Weite(ch), Writein; a s= &;
+REPEAT n := ntl; Teetich);
+TF {nm MOD 58) = & THEN WriteLn END ;
+Write(".°}; BusyRead(chl)
+UNTIL chi § @C;
+WeiteCard(n,6)}; Writein; Wreite(">"°); Read{ch)
+END ;
+Wr ite(i4c)
+END Senchaark.
